@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tdoc tinper-moy概述</title>
+    <link rel="stylesheet" href="source/app.css"/>
+    <link rel="stylesheet" href="source/highlight.min.css">
+</head>
+<body>
+<a id="skippy" class="sr-only sr-only-focusable" href="#content"><div class="container"><span class="skiplink-text">Skip to main content</span></div></a>
+
+
+<!-- Docs master nav -->
+<header class="navbar navbar-static-top docs-nav" id="top" role="banner">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+            <a href="http://docs.tinper.org/moy/" class="navbar-brand">tinper</a>
+            
+        </div>
+        <nav id="bs-navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                
+                    
+                    <li class="active">
+                        
+                        <a href="index.html">tinper-moy概述</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="快速入门.html">tinper-moy技术文档-快速入门</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="config.html">tinper-moy技术文档-实战开发</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="studio实战开发.html">studio实战开发</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="tinper-moy 技术 API.html">tinper-moy 技术 API</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="moy 组件库.html">moy 组件库</a>
+                        
+                    </li>
+                    
+                    <li class="">
+                        
+                        <a href="tinper-moy 附录.html">附录</a>
+                        
+                    </li>
+                    
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Docs page layout -->
+
+<div class="docs-header" id="content" style="margin-bottom:0">
+    <div class="container">
+        <h1> tinper-moy 概述</h1>
+        <p>开始</p>
+    </div>
+</div>
+
+
+
+<header style="height:20px"></header>
+
+
+<div class="container docs-container">
+    
+    
+    <div class="row">
+        <div class="col-md-9 markdown-body" role="main">
+            
+            <h1 id="tinper-moy 概述">tinper-moy 概述</h1><h2 id="1.什么是 moy?">1.什么是 moy?</h2><h3 id="1.1 moy 组成">1.1 moy 组成</h3><p>moy 是基于模型框架 kero 和 UI 框架 neoui 实现的应用框架，是一种前端集成解决方案，为企业级应用开发而生。<a href="https://github.com/iuap-design/tinper-moy">github 地址</a></p>
+<h3 id="1.2 moy 整体介绍">1.2 moy 整体介绍</h3><p>本文会一步步引导大家使用moy如何快速创建一个后台管理系统，该教程基于uba，包含查询、编辑、删除、创建，以及分页处理，数据 mock，自动处理 loading 状态等.</p>
+<h2 id="2.框架仓库结构说明">2.框架仓库结构说明</h2><h3 id="框架所有仓库结构图">框架所有仓库结构图</h3><p><img src="../../images/概述/框架所有仓库结构说明.png" alt="框架所有仓库结构说明"></p>
+<h3 id="框架核心仓库结构图">框架核心仓库结构图</h3><p><img src="../../images/概述/框架核心仓库结构说明.png" alt="框架核心仓库结构说明"></p>
+<p>以下针对结构图进行分层说明：</p>
+<h3 id="框架基础">框架基础</h3><ul>
+<li>tinper-sparrow：提供框架基础api<h3 id="UI层">UI层</h3></li>
+<li><p>compox：框架创建组件的核心逻辑，主要包括compMgr以及createApp</p>
+</li>
+<li><p>tinper-neoui：基于compox规范定义各个UI组件</p>
+</li>
+<li><p>compox-util：app所提供的工具api，方便功能开发人员进行操作</p>
+</li>
+</ul>
+<h3 id="数据层">数据层</h3><ul>
+<li>kero：做为MVVM架构中Model层的增强，提供多维数据模型</li>
+<li>kero-fetch：主要提供与服务器交互时所需的方法，需和后台数据模型联合使用</li>
+</ul>
+<h3 id="适配层">适配层</h3><ul>
+<li>neoui-kero：针对各个组件进行适配</li>
+<li>neoui-kero-mixin：对neoui-keo适配层的公共逻辑进行提取，neoui-kero中可根据需要添加对应的mixin<h3 id="jquery插件/IE8兼容">jquery插件/IE8兼容</h3></li>
+<li>tinper-neoui-grid：基于jquery实现的grid组件</li>
+<li>tinper-neoui-tree：第三方tree插件 ztree</li>
+<li>tinper-neoui-polyfill：IE8兼容处理</li>
+</ul>
+<h2 id="3.原理和构成">3.原理和构成</h2><h3 id="3.1.基类class">3.1.基类class</h3><p>所有的js对象都继承自class</p>
+<p>new对象时都会调用initialize方法，UI组件基类BaseComponent与u-meta组件基类BaseAdapter的initialize方法中都会调用init方法，因此各个组件需要将init作为入口方法并进行实现</p>
+<h3 id="3.2.UI组件">3.2.UI组件</h3><h4 id="UI组件注册">UI组件注册</h4><ul>
+<li>CompMgr.regComp：注册UI组件，将comp与css进行关联<h4 id="UI组件解析过程">UI组件解析过程</h4></li>
+<li>CompMgr.updateComp：针对页面的css进行解析，生成UI组件<h3 id="3.3.u-meta组件">3.3.u-meta组件</h3><h4 id="u-meta组件注册解析过程">u-meta组件注册解析过程</h4></li>
+<li>CompMgr.addDataAdapter：注册适配层，将compAdapter于type进行关联<h4 id="u-meta组件解析过程">u-meta组件解析过程</h4></li>
+</ul>
+<p>u-meta组件解析过程说明图</p>
+<p><img src="../../images/概述/u-meta组件解析过程.png" alt="u-meta组件解析过程"></p>
+<ul>
+<li>createApp：针对页面的u-meta进行解析，生成组件并与datatable进行绑定</li>
+<li>app.init：针对页面的u-meta进行解析的核心方法，遍历所有的u-meta元素调用compMgr.createDataAdapter生成每个组件</li>
+<li>compMgr.createDataAdapter：针对传入的type级u-meta属性new对应的adapter</li>
+</ul>
+<h3 id="3.4.mixin说明">3.4.mixin说明</h3><p>neoui-kero-mixin仓库对neoui-kero适配层的公共逻辑进行提取</p>
+<ul>
+<li>BaseAdapter中默认添加了ValueMixin,EnableMixin, RequiredMixin, ValidateMixin，如果新增组件有特殊需求可通过自定义mixins属性来调整添加的mixin</li>
+<li>BaseAdapter中的initialize方法会将mixin中的methods添加至当前组件，并且在方法最后会调用mixin的init方法进行初始化</li>
+</ul>
+<h4 id="ValueMixin">ValueMixin</h4><p>处理数据在tinper-neoui与kero之间的交互操作。以下对核心API进行说明：</p>
+<ul>
+<li>modelValueChange：数据模型改变时执行的方法，可针对实际情况在各组件中重写</li>
+<li>setShowValue：modelValueChange中对数据格式化之后调用此方法修改UI层的战士，可针对实际情况在各组件中重写</li>
+<li>setValue：UI层改变时执行的方法，提供接口beforeSetValue并在setValue最开始调用，可针对实际情况在各组件中重写beforeSetValue以便对数据进行格式化等操作<h4 id="EnableMixin">EnableMixin</h4>根据u-meta中的enable属性传入UI层，并监听datatable的Enable属性变化。以下对核心API进行说明：</li>
+<li>setEnable：设置UI层的enable展示，可针对实际情况在各组件中重写</li>
+</ul>
+<h4 id="RequiredMixin">RequiredMixin</h4><p>根据u-meta中的required属性传入UI层，并监听datatable的required属性变化。以下对核心API进行说明：</p>
+<ul>
+<li>setRequired：设置UI层的必输展示，可针对实际情况在各组件中重写</li>
+</ul>
+<h4 id="ValidateMixin">ValidateMixin</h4><p>根据datatable或u-meta中的校验属性定义来生成校验组件，并没有监听datatable中的属性变化，后续考虑优化。以下对核心API进行说明：</p>
+<ul>
+<li>doValidate：调用当前组件的数据校验</li>
+</ul>
+
+        </div>
+        <div class="col-md-3" role="complementary">
+            <nav class="docs-sidebar hidden-print hidden-xs hidden-sm">
+                <ul class="nav docs-sidenav">
+                    
+                    
+                    <li>
+                        
+                        <a href="#1.什么是 moy?" >1.什么是 moy?</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#1.1 moy 组成" >1.1 moy 组成</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#1.2 moy 整体介绍" >1.2 moy 整体介绍</a>
+                        </li>
+                    
+                    </ul>
+                    
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="#2.框架仓库结构说明" >2.框架仓库结构说明</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#框架所有仓库结构图" >框架所有仓库结构图</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#框架核心仓库结构图" >框架核心仓库结构图</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#框架基础" >框架基础</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#UI层" >UI层</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#数据层" >数据层</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#适配层" >适配层</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#jquery插件/IE8兼容" >jquery插件/IE8兼容</a>
+                        </li>
+                    
+                    </ul>
+                    
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="#3.原理和构成" >3.原理和构成</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#3.1.基类class" >3.1.基类class</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#3.2.UI组件" >3.2.UI组件</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#3.3.u-meta组件" >3.3.u-meta组件</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#3.4.mixin说明" >3.4.mixin说明</a>
+                        </li>
+                    
+                    
+                    
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    
+</div>
+
+<!-- Footer
+================================================== -->
+<footer class="docs-footer" role="contentinfo">
+    <div class="container">
+        <p>Made By YonYouFED. © 2014 - 2016</p>
+    </div>
+</footer>
+
+<script src="source/jquery.min.js"></script>
+<script src="source/bootstrap.min.js"></script>
+<script src="source/docs.min.js"></script>
+<script src="source/highlight.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('code').each(function(i, block) {
+            if (block.innerHTML.indexOf('\n') != -1) {
+                var pn = block.parentNode;
+                if (pn.tagName.toUpperCase() == 'PRE') {
+                    try {
+                        hljs.highlightBlock(block);
+                    } catch(e) {}
+                } else {
+                    pn.innerHTML = '<pre><code>' + block.innerHTML + '</code></pre>';
+                    try {
+                        hljs.highlightBlock(pn.childNodes[0].childNodes[0]);
+                    } catch(e) {}
+                }
+            }
+        });
+
+        var winHeight = $(window).height() - 40,
+            sidebar = $('.docs-sidebar');
+
+        if (sidebar.height() > winHeight) {
+
+            sidebar.css('max-height', winHeight + 'px');
+            sidebar.css('overflow', 'scroll');
+
+            var activeMenu,
+                barScroll = false;
+
+            sidebar.on('mouseover', function() {
+                barScroll = true;
+            });
+
+            sidebar.on('mouseout', function() {
+                barScroll = false;
+            });
+            if (!barScroll) {
+                var activeItem = $('.docs-sidebar li.active a');
+                if (activeItem.length) {
+                    if (!activeMenu || (activeMenu.attr('href') != activeItem.attr('href'))) {
+                        activeMenu = activeItem;
+                        var top = activeMenu.offset().top - sidebar.offset().top;
+                        if (top < 0) {
+                            sidebar.scrollTop(sidebar.scrollTop() + top);
+                        } else if (top > winHeight - 30) {
+                            sidebar.scrollTop(sidebar.scrollTop() + top - winHeight + 30);
+                        }
+                    }
+                }
+            }
+            $(window).on('scroll', function(e) {
+                if (!barScroll) {
+                    var activeItem = $('.docs-sidebar li.active a');
+                    if (activeItem.length) {
+                        if (!activeMenu || (activeMenu.attr('href') != activeItem.attr('href'))) {
+                            activeMenu = activeItem;
+                            var top = activeMenu.offset().top - sidebar.offset().top;
+                            if (top < 0) {
+                                sidebar.scrollTop(sidebar.scrollTop() + top);
+                            } else if (top > winHeight - 30) {
+                                sidebar.scrollTop(sidebar.scrollTop() + top - winHeight + 30);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>
