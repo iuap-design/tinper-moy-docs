@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tdoc tinper-moy技术文档-实战开发</title>
+    <title>Tdoc moy 组件库</title>
     <link rel="stylesheet" href="source/app.css"/>
     <link rel="stylesheet" href="source/highlight.min.css">
 </head>
@@ -41,7 +41,7 @@
                         
                     </li>
                     
-                    <li class="active">
+                    <li class="">
                         
                         <a href="config.html">tinper-moy技术文档-实战开发</a>
                         
@@ -59,7 +59,7 @@
                         
                     </li>
                     
-                    <li class="">
+                    <li class="active">
                         
                         <a href="moy 组件库.html">moy 组件库</a>
                         
@@ -81,8 +81,8 @@
 
 <div class="docs-header" id="content" style="margin-bottom:0">
     <div class="container">
-        <h1>tinper-moy 实战开发</h1>
-        <p>tinper-moy技术文档-实战开发</p>
+        <h1>moy 组件库</h1>
+        <p>moy 组件库</p>
     </div>
 </div>
 
@@ -97,55 +97,115 @@
     <div class="row">
         <div class="col-md-9 markdown-body" role="main">
             
-            <h1 id="实战开发">实战开发</h1><h2 id="币种节点">币种节点</h2><h3 id="节点前知识点:">节点前知识点:</h3><ul>
-<li>Router——前端路由框架</li>
-<li>AMD——模块化管理工具</li>
-<li>数据模型——处理企业级复杂数据交互</li>
-<li>UI——快速构建前端页面</li>
-<li>UI模型——处理UI和数据模型之间的数据通信<h3 id="单页应用">单页应用</h3><code>前端界面采用的单页面应用，单页Web应用（single page web application，SPA），就是只有一张Web页面的应用。单页应用程序 (SPA) 是加载单个HTML 页面并在用户与应用程序交互时动态更新该页面的Web应用程序。 浏览器一开始会加载必需的HTML、CSS和JavaScript，所有的操作都在这张页面上完成，都由JavaScript来控制。因此，对单页应用来说模块化的开发和设计显得相当重要。</code></li>
-</ul>
-<h4 id="单页面应用的优点是：">单页面应用的优点是：</h4><ul>
-<li>速度：更好的用户体验，让用户在web app感受native app的速度和流畅，</li>
-<li>MVC：经典MVC开发模式，前后端各负其责。</li>
-<li>ajax：重前端，业务逻辑全部在本地操作，数据都需要通过AJAX同步、提交。</li>
-<li>路由：在URL中采用#号来作为当前视图的地址,改变#号后的参数，页面并不会重载
-在平台中,实际只有index.html这一个单页面，在这个单页面中，加载了必须的CSS和JavaScript。然后有一个内容区，在点击菜单时，改变地址hash，我们用hash的变化从而推动界面相应的功能变化并在内容区中渲染出来。
-那如何根据hash变化调用所需的js方法呢？来让前端路由吧！</li>
-</ul>
-<h4 id="前端路由的实现">前端路由的实现</h4><p>前端路由主要是用在单页面应用中，解决单页面应用里，地址变化，整体页面并不需要重新渲染，只重新渲染局内容。
-平台中采用director.js开源框架做为默认的路由框架。基本用法如下：</p>
+            <hr>
+<p>title: 进度条
+type: moy</p>
+<h2 id="order: 16">order: 16</h2><h4 id="进度条">进度条</h4><p>本例实现NeoUI组件progress数据绑定。</p>
+<h4 id="Progress">Progress</h4><p>本例实现如下效果：</p>
 <ul>
-<li>1 var router = Router();</li>
-<li><p>2 定义order路径所对应的操作</p>
-</li>
-<li><p>3 router.on(&#39;/order&#39;, function(){</p>
-</li>
-<li>4 具体的实现代码</li>
-<li>5 });</li>
-<li>6</li>
-<li>7 router.init();</li>
+<li>绑定默认数据</li>
+<li>实现UI交互</li>
 </ul>
-<p>当浏览器地址变为：<a href="http://localhost#/">http://localhost#/</a> currtype时,会触发上面监听的function，找到对应的币种节点。
-在平台前端主页面中，使用了router的相关方法来监听地址变化。同时使用requirejs来做动态加载。从而实现的整个单页面应用的运转。</p>
-<h4 id="AMD 规范化">AMD 规范化</h4><p>AMD是&quot;异步模块定义”。它采用异步方式加载模块，模块的加载不影响它后面语句的运行。所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完成之后，这个回调函数才会运行。
-AMD采用require()语句加载模块，但是不同于CommonJS，它要求两个参数：</p>
-<p><code>require([module], callback);</code></p>
-<ul>
-<li>第一个参数[module]，是一个数组，里面的成员就是要加载的模块；</li>
-<li>第二个参数callback，则是加载成功之后的回调函数。例如:
-<code>require([&#39;math&#39;], function (math) { math.add(2, 3);});</code></li>
-</ul>
-<p>math.add()与math模块加载不是同步的，加载完math模块，运用math的add方法，这样浏览器不会发生假死现象。所以很显然，AMD比较适合浏览器环境。
-目前，require.js是主要是实现了AMD规范的javascript库。平台中也是使用的require.js做为AMD模块化规范。可参见：<a href="http://www.requirejs.cn/">http://www.requirejs.cn/</a> 学习requirejs的用法。</p>
-<h3 id="币种节点Currtype.html解析">币种节点Currtype.html解析</h3><p><img src="../../images/快速开发/1.png" alt="html">
-<img src="../../images/快速开发/2.png" alt="html">
-<img src="../../images/快速开发/3.png" alt="html"></p>
-<h3 id="币种节点 meta.js解析">币种节点 meta.js解析</h3><h4 id="向导生成数据模型，字段默认类型为String">向导生成数据模型，字段默认类型为String</h4><p><img src="../../images/快速开发/4.png" alt="html"></p>
-<h3 id="币种节点 Currtype.js解析">币种节点 Currtype.js解析</h3><h4 id="使用requirejs的方式引用，前三个分别是：对应的html、数据模型js、对用的css。">使用requirejs的方式引用，前三个分别是：对应的html、数据模型js、对用的css。</h4><p><img src="../../images/快速开发/5.png" alt="meta"></p>
-<h4 id="事件：打开节点时的页面初始化方法pageInit()，初始化界面及数据模型：">事件：打开节点时的页面初始化方法pageInit()，初始化界面及数据模型：</h4><p><img src="../../images/快速开发/6.png" alt="事件"></p>
-<h3 id="新增修改保存方法">新增修改保存方法</h3><p><img src="../../images/快速开发/7.png" alt="事件">
-<img src="../../images/快速开发/8.png" alt="事件">
-<img src="../../images/快速开发/9.png" alt="事件"></p>
+<p>{% raw %}</p>
+<div class="example-content"><!-- 
+    HTML
+    u-meta:框架特有标记，框架通过识别此标记创建对应UI组件，以及进行数据绑定 
+    id,type.data,field为必选项
+    id:创建组件唯一标识
+    type:创建组件对应的类型
+    data:指定数据模型中的数据集
+    field:绑定数据集中对应的字段
+    datasource:绑定数据
+-->
+<div class="u-progress" u-meta='{&quot;id&quot;:&quot;c1&quot;,&quot;type&quot;:&quot;u-progress&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;}'></div>
+</div>
+
+
+
+<script>
+// JS
+
+/**
+ * viewModel 创建数据模型
+ * dt1 创建的数据集
+ * f1 创建数据集中的字段
+ * type:指定数据对应的类型
+ */
+var app,viewModel;
+viewModel = {
+    dt1: new u.DataTable({
+        meta:{
+            f1:{}
+        }
+    })
+};
+
+/**
+ * app 创建框架服务
+ * el 指定服务对应的顶层DOM
+ * model 指定服务对应的数据模型
+ */
+app = u.createApp({
+    el:'body',
+    model:viewModel
+});
+
+// 创建空行,绑定默认值
+var r = viewModel.dt1.createEmptyRow();
+r.setValue('f1',44);
+
+
+
+</script>
+
+<p>{% endraw %}</p>
+<pre><code class="lang-html">&lt;!-- 
+    HTML
+    u-meta:框架特有标记，框架通过识别此标记创建对应UI组件，以及进行数据绑定 
+    id,type.data,field为必选项
+    id:创建组件唯一标识
+    type:创建组件对应的类型
+    data:指定数据模型中的数据集
+    field:绑定数据集中对应的字段
+    datasource:绑定数据
+--&gt;
+&lt;div class=&quot;u-progress&quot; u-meta=&#39;{&quot;id&quot;:&quot;c1&quot;,&quot;type&quot;:&quot;u-progress&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;}&#39;&gt;&lt;/div&gt;
+
+</code></pre>
+<pre><code class="lang-js">// JS
+
+/**
+ * viewModel 创建数据模型
+ * dt1 创建的数据集
+ * f1 创建数据集中的字段
+ * type:指定数据对应的类型
+ */
+var app,viewModel;
+viewModel = {
+    dt1: new u.DataTable({
+        meta:{
+            f1:{}
+        }
+    })
+};
+
+/**
+ * app 创建框架服务
+ * el 指定服务对应的顶层DOM
+ * model 指定服务对应的数据模型
+ */
+app = u.createApp({
+    el:&#39;body&#39;,
+    model:viewModel
+});
+
+// 创建空行,绑定默认值
+var r = viewModel.dt1.createEmptyRow();
+r.setValue(&#39;f1&#39;,44);
+
+
+
+</code></pre>
 
         </div>
         <div class="col-md-3" role="complementary">
@@ -155,7 +215,87 @@ AMD采用require()语句加载模块，但是不同于CommonJS，它要求两个
                     
                     <li>
                         
-                        <a href="#币种节点" >币种节点</a>
+                        <a href="moy 组件库-级联组件.html" >级联组件</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-表盘选择.html" >表盘选择</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-下拉框.html" >下拉框</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-输入转换.html" >输入转换</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-复选框.html" >复选框</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-日期时间选择.html" >日期时间选择</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-月份选择.html" >月份选择</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-月日选择.html" >月日选择</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-分页.html" >分页</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-数值百分比.html" >数值百分比</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-进度条.html" style="color:#0088a4">进度条</a>
                         
                     </li>
                     
@@ -165,49 +305,83 @@ AMD采用require()语句加载模块，但是不同于CommonJS，它要求两个
                     <ul class="nav" style="display:block">
                     
                         <li>
-                            <a href="#节点前知识点:" >节点前知识点:</a>
+                            <a href="#order: 16" >order: 16</a>
                         </li>
                     
+                    </ul>
                     
                     
                     
                     
-                        <li>
-                            <a href="#单页应用" >单页应用</a>
-                        </li>
+                    <li>
+                        
+                        <a href="moy 组件库-单选.html" >单选</a>
+                        
+                    </li>
                     
                     
                     
-                    
-                    
-                        <li>
-                            <a href="#币种节点Currtype.html解析" >币种节点Currtype.html解析</a>
-                        </li>
-                    
-                    
-                    
-                    
-                    
-                        <li>
-                            <a href="#币种节点 meta.js解析" >币种节点 meta.js解析</a>
-                        </li>
+                    <li>
+                        
+                        <a href="moy 组件库-开关.html" >开关</a>
+                        
+                    </li>
                     
                     
                     
-                    
-                    
-                        <li>
-                            <a href="#币种节点 Currtype.js解析" >币种节点 Currtype.js解析</a>
-                        </li>
-                    
-                    
+                    <li>
+                        
+                        <a href="moy 组件库-时间选择.html" >时间选择</a>
+                        
+                    </li>
                     
                     
                     
-                        <li>
-                            <a href="#新增修改保存方法" >新增修改保存方法</a>
-                        </li>
+                    <li>
+                        
+                        <a href="moy 组件库-自定义验证.html" >自定义验证</a>
+                        
+                    </li>
                     
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-年份选择.html" >年份选择</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-年月.html" >年月</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-多行文本框.html" >多行文本框</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-文本输入框.html" >文本输入框</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="moy 组件库-树.html" >树</a>
+                        
+                    </li>
                     
                     
                 </ul>

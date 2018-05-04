@@ -1,10 +1,32 @@
 # tinper-moy 概述
 ## 1.什么是 moy?
 ### 1.1 moy 组成
-moy 是基于模型框架 kero 和 UI 框架 neoui 实现的应用框架，是一种前端集成解决方案，为企业级应用开发而生。[github 地址](https://github.com/iuap-design/tinper-moy)
+moy 是基于模型框架 kero 和 UI 框架 neoui 实现的应用框架，是一种前端集成解决方案，为企业级应用开发而生。[github 地址](https://github.com/iuap-design/tinper-moy);
+- 1.1.1工程化 gulp less sass webpack commonJS ES6 
+
+- 1.1.2.路由 Router director.js
+
+- 1.1.3.AMD  模块化 引入需要的文件 js css 等文件
+
+- 1.1.4.数据模型 mvvm
+
+- 1.1.5.页面和数据如何连接到一起：u-meta
+
+- 1.1.6页面元素 UI框架neoui。 [neoui](http://docs.tinper.org/neoui/)
+
+
+- 1.1.7数据 kero数据模型。[kero](http://docs.tinper.org/moy/kero-api.html#)
+
+- 1.1.8复杂表格。[grid](http://docs.tinper.org/moy/grid_index.html)
+
+- 1.1.9树表。[tree](http://docs.tinper.org/moy/kero/tree.html)
+
+- 1.1.10如何快速预览和拷贝和调试？[在线调试例子](http://tinper.org/webide/#/demos/ui/button)
+![效果](../../images/概述/kuangjia.png)
 ### 1.2 moy 整体介绍
 本文会一步步引导大家使用moy如何快速创建一个后台管理系统，该教程基于uba，包含查询、编辑、删除、创建，以及分页处理，数据 mock，自动处理 loading 状态等.
-
+### 1.3 最终演示
+![效果](../../images/概述/xiaoguo.gif)
 ## 2.框架仓库结构说明
 
 ### 框架所有仓库结构图
@@ -86,3 +108,10 @@ neoui-kero-mixin仓库对neoui-kero适配层的公共逻辑进行提取
 #### ValidateMixin
 根据datatable或u-meta中的校验属性定义来生成校验组件，并没有监听datatable中的属性变化，后续考虑优化。以下对核心API进行说明：
 * doValidate：调用当前组件的数据校验
+## 4.环境和准备说明
+ ## 环境准备和说明
+
+- 安装[node.js](http://nodejs.cn/)开发环境，确保 node 版本是 4.x +
+
+
+- 用 [cnpm](http://npm.taobao.org/)能节约你安装依赖的时间

@@ -97,9 +97,120 @@
     <div class="row">
         <div class="col-md-9 markdown-body" role="main">
             
-            <h1 id="tinper-moy 技术 API">tinper-moy 技术 API</h1><h2 id="kreoAPI">kreoAPI</h2><ul>
-<li><h2 id="gridAPI">gridAPI</h2></li>
-<li></li>
+            <h1 id="附录">附录</h1><h2 id="什么是 Knockout?">什么是 Knockout?</h2><p> Knockout是一款很优秀的JavaScript库，它可以帮助你仅使用一个清晰整洁的底层数据模型（data model）即可创建一个富文本且具有良好的显示和编辑功能的用户界面。任何时候你的局部UI内容需要自动更新（比如：依赖于用户行为的改变或者外部的数据源发生变化），KO都可以很简单的帮你实现，并且非常易于维护。</p>
+<h2 id="有哪些优点?">有哪些优点?</h2><p>KO重要特性：
+优雅的依赖跟踪-任何时候当数据源模型发生变化时，它都能够自动的更新你UI的指定内容。</p>
+<p>声明式绑定-它通过简单浅显的方式将你的UI与数据源模型进行绑定，你可以使用任意嵌套的结构模版来组建一个复杂的动态界面。</p>
+<p>良好的可扩展性-通过简单的几行代码就可以实现一个自定义行为作为新的声明进行绑定。</p>
+<p>其他优点：
+纯JavaScript库-兼容任何服务器和客户端技术。</p>
+<p>可以很好的应用到已有的应用程序中-而不需要程序主要架构发生变化。</p>
+<p>简洁-采用Gzip压缩之后只要13K。</p>
+<p>兼容任何主流浏览器-(IE 6+, Firefox 2+, Chrome, Safari, 及其他)</p>
+<p>一套全面完整的规范（采用行为驱动开发）-这意味着在新的浏览器或平台中也能够很容易验证通过。</p>
+<p>开发人员如果熟悉Ruby on Rails，Asp.net MVC 或其它MVC技术可能会发现它是一个带有声明式语法的MVC实时form。换句话说，你可以把KO当成通过编辑JSON数据来制作UI用户界面的一种方式… 不管它为你做什么。</p>
+<h2 id="如何使用?">如何使用?</h2><p>最快速、最有趣的方式就是通过互动式教学的方式来开始学习，一旦你掌握了最基本的技巧，学习了每个在线实例，你就可以在你的项目中一展身手了。</p>
+<h2 id="data-bind声明式绑定">data-bind声明式绑定</h2><ul>
+<li>bisible
+<code>&lt;div id=&quot;myview&quot; data-bind=&quot;visible : isVisible&quot;&gt; visible bind &lt;/div&gt;</code></li>
+<li>text 
+<code>&lt;div id=&quot;myview&quot; data-bind=&quot;text : name&quot;&gt;</code></li>
+<li>html
+<code>&lt;div id=&quot;myview&quot; data-bind=&quot;html : htmlContent&quot;&gt;</code></li>
+<li>css 
+<code>&lt;div id=&quot;myview&quot; data-bind=&quot;css : {redbg : testValue() &lt; 0}&quot;&gt;</code></li>
+<li>attr
+<code>&lt;div id=&quot;myview&quot; data-bind=&quot;attr : {title : titleName}&quot;&gt;</code></li>
+<li>click
+<code>&lt;div data-bind=&quot;text : clickCount&quot;&gt;</code></li>
+<li>foreach
+<code>&lt;tbody data-bind=&quot;foreach: people&quot;&gt;&lt;tr&gt;&lt;td data-bind=&quot;text: firstName&quot;&gt;&lt;/td&gt; &lt;td data-bind=&quot;text: lastName&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;</code></li>
+<li><code>js 部分: ko.applyBindings({         people: [             { firstName: &#39;Bert&#39;, lastName: &#39;Bertington&#39; },             { firstName: &#39;Charles&#39;, lastName: &#39;Charlesforth&#39; },             { firstName: &#39;Denise&#39;, lastName: &#39;Dentiste&#39; }         ]     });</code>   </li>
+<li>增加节点</li>
+</ul>
+<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;knockout-2.2.0.js&quot;&gt;&lt;/script&gt;
+
+ &lt;h4&gt;People&lt;/h4&gt; 
+ &lt;ul data-bind=&quot;foreach: people&quot;&gt; 
+
+     &lt;li&gt; 
+
+         Name at position &lt;span data-bind=&quot;text: $index&quot;&gt; &lt;/span&gt;: 
+
+         &lt;span data-bind=&quot;text: name&quot;&gt; &lt;/span&gt; 
+
+         Remove 
+
+     &lt;/li&gt; 
+
+ &lt;/ul&gt; 
+
+ &lt;button data-bind=&quot;click: addPerson&quot;&gt;Add&lt;/button&gt;
+
+ &lt;script type=&quot;text/javascript&quot;&gt;
+
+     function AppViewModel() {
+
+         var self = this;
+self.people = ko.observableArray([
+     { name: &#39;Bert&#39; },
+     { name: &#39;Charles&#39; },
+     { name: &#39;Denise&#39; }
+ ]);
+
+     self.addPerson = function () {
+         self.people.push({ name: &quot;New at &quot; + new Date() });
+     };
+
+     self.removePerson = function () {
+         self.people.remove(this);
+     }
+ }
+
+ ko.applyBindings(new AppViewModel());
+  &lt;/script&gt;
+</code></pre><ul>
+<li><p>如果我们想要输出数组中的所有元素而不是像例一中使用firstName去指定元素的话，我们可以使用$data来进行输出。</p>
+  <script type="text/javascript" src="knockout-2.2.0.js"></script>
+   <ul data-bind="foreach: months"> 
+       The current item is: <b data-bind="text: $data"></b> 
+   </li> 
+   </ul> 
+   <script type="text/javascript"> 
+   ko.applyBindings({
+       months: ['Jan', 'Feb', 'Mar', 'etc']
+   }); 
+  </script>    
+</li>
+<li><p>使用$index、$parent等其他的上下文属性</p>
+</li>
+<li><b data-bind="text: name"></b> likes the blog post <b data-bind="text: $parent.blogPostTitle"></b></li>
+<li><p>使用&quot;as&quot;为foreach中的元素定义别名我们可以使用$data来代替数组中的元素，同时我们也可以使用as来为我们要遍历的元素起一个别名。</p>
+<p>  <script type="text/javascript" src="knockout-2.2.0.js"></script></p>
+<pre><code>  &lt;ul data-bind=&quot;foreach: { data: categories, as: &#39;category&#39; }&quot;&gt; 
+      &lt;li&gt; 
+          &lt;ul data-bind=&quot;foreach: { data: items, as: &#39;item&#39; }&quot;&gt; 
+               &lt;li&gt; 
+                   &lt;span data-bind=&quot;text: category.name&quot;&gt;&lt;/span&gt;: 
+                  &lt;span data-bind=&quot;text: item&quot;&gt;&lt;/span&gt; 
+              &lt;/li&gt; 
+          &lt;/ul&gt; 
+      &lt;/li&gt; 
+  &lt;/ul&gt; 
+</code></pre>   <script>
+
+<p>   var viewModel = {</p>
+<pre><code>   categories: ko.observableArray([
+
+       { name: &#39;Fruit&#39;, items: [&#39;Apple&#39;, &#39;Orange&#39;, &#39;Banana&#39;] },
+
+       { name: &#39;Vegetables&#39;, items: [&#39;Celery&#39;, &#39;Corn&#39;, &#39;Spinach&#39;] }
+
+   ])
+</code></pre><p>   };</p>
+<p>   ko.applyBindings(viewModel); </p>
+<p><a href="http://www.aizhengli.com/knockoutjs/">更多请参考</a></p>
+</li>
 </ul>
 
         </div>
@@ -110,7 +221,7 @@
                     
                     <li>
                         
-                        <a href="#kreoAPI" >kreoAPI</a>
+                        <a href="#什么是 Knockout?" >什么是 Knockout?</a>
                         
                     </li>
                     
@@ -118,7 +229,23 @@
                     
                     <li>
                         
-                        <a href="#gridAPI" >gridAPI</a>
+                        <a href="#有哪些优点?" >有哪些优点?</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="#如何使用?" >如何使用?</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="#data-bind声明式绑定" >data-bind声明式绑定</a>
                         
                     </li>
                     

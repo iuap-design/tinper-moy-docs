@@ -29,7 +29,7 @@
         "title": " tinper-moy 快速入门",
         "description": "tinper-moy技术文档-快速入门"
       },
-      "content": "./docs/usage.md"
+      "content": "./docs/tinper-moy/tinper-moy-hello.md"
     },
     {
       "name": "config",
@@ -59,23 +59,109 @@
       "content": "./docs/tinper-moy/api.md"
     },
     {
-        "name": "moy 组件库",
+      "name": "moy 组件库",
+      "title": "moy 组件库",
+      "banner": {
         "title": "moy 组件库",
-        "banner": {
-          "title": "moy 组件库",
-          "description": "moy 组件库"
-        },
-        "content": "./docs/tinper-moy/moy-components.md"
+        "description": "moy 组件库"
       },
-      {
-        "name": "tinper-moy 附录",
-        "title": "附录",
-        "banner": {
-          "title": "tinper-moy 附录",
-          "description": "tinper-moy 附录"
-        },
-        "content": "./docs/tinper-moy/tinper-moy-api.md"
+      "content": {
+        "sidebar": false,
+        "multi": true,
+        "index": "./docs/tinper-moy/kero/cascader.md",
+        "pages": [
+          {
+            "name": "级联组件",
+            "content": "./docs/tinper-moy/kero/cascader.md"
+          },
+          {
+            "name": "表盘选择",
+            "content": "./docs/tinper-moy/kero/clockpicker.md"
+          },
+          {
+            "name": "下拉框",
+            "content": "./docs/tinper-moy/kero/combobox_ex.md"
+          },
+          {
+            "name": "输入转换",
+            "content": "./docs/tinper-moy/kero/currency_ex.md"
+          },
+          {
+            "name": "复选框",
+            "content": "./docs/tinper-moy/kero/ex_checkbox.md"
+          },
+          {
+            "name": "日期时间选择",
+            "content": "./docs/tinper-moy/kero/ex_datetime.md"
+          },
+          {
+            "name": "月份选择",
+            "content": "./docs/tinper-moy/kero/ex_month.md"
+          },
+          {
+            "name": "月日选择",
+            "content": "./docs/tinper-moy/kero/ex_monthdate.md"
+          },
+          {
+            "name": "分页",
+            "content": "./docs/tinper-moy/kero/ex_pagination.md"
+          },
+          {
+            "name": "数值百分比",
+            "content": "./docs/tinper-moy/kero/ex_percent.md"
+          },
+          {
+            "name": "进度条",
+            "content": "./docs/tinper-moy/kero/ex_progress.md"
+          },
+          {
+            "name": "单选",
+            "content": "./docs/tinper-moy/kero/ex_radio.md"
+          },
+          {
+            "name": "开关",
+            "content": "./docs/tinper-moy/kero/ex_switch.md"
+          },
+          {
+            "name": "时间选择",
+            "content": "./docs/tinper-moy/kero/ex_time.md"
+          },
+          {
+            "name": "自定义验证",
+            "content": "./docs/tinper-moy/kero/ex_validate.md"
+          },
+          {
+            "name": "年份选择",
+            "content": "./docs/tinper-moy/kero/ex_year.md"
+          },
+          {
+            "name": "年月",
+            "content": "./docs/tinper-moy/kero/ex_yearmonth.md"
+          },
+          {
+            "name": "多行文本框",
+            "content": "./docs/tinper-moy/kero/textarea.md"
+          },
+          {
+            "name": "文本输入框",
+            "content": "./docs/tinper-moy/kero/textfield.md"
+          },
+          {
+            "name": "树",
+            "content": "./docs/tinper-moy/kero/tree.md"
+          }
+        ]
       }
+    },
+    {
+      "name": "tinper-moy 附录",
+      "title": "附录",
+      "banner": {
+        "title": "tinper-moy 附录",
+        "description": "tinper-moy 附录"
+      },
+      "content": "./docs/tinper-moy/tinper-moy-more.md"
+    }
   ],
   "rootDir": "docs"
 }

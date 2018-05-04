@@ -98,89 +98,144 @@
         <div class="col-md-9 markdown-body" role="main">
             
             <hr>
-<p>title: 级联组件
+<p>title: 树
 type: moy</p>
-<h2 id="order: 6">order: 6</h2><h4 id="级联组件">级联组件</h4><p>本例展示级联组件示例。</p>
-<p><a href="http://tinper.org/webide/#/demos/kero/cascader">试一试</a></p>
+<h2 id="order: 25">order: 25</h2><h4 id="树">树</h4><p>本例实现NeoUI组件ztree的数据绑定。</p>
+<p><a href="http://tinper.org/webide/#/demos/kero/tree-dt">试一试</a></p>
 <h4 id="API">API</h4><h4 id="u-meta 属性">u-meta 属性</h4><ul>
-<li><p>type：<code>u-cascader</code></p>
+<li><p>type：<code>tree</code></p>
 </li>
-<li><p>datasource</p>
-<ul>
-<li>类型： Array</li>
-<li>说明：设置下拉框的数据源，具体数组内容需要在viewmodel中定义，数组中的每个对象需要有value，name字段。其中name为下拉框的显示值，value为下拉框的真实值。</li>
-<li><p>用法：</p>
-<pre><code>
-  casData:[{value: &quot;11&quot;,name: &#39;杭州&#39;}]
+<li><p>idField: 节点的主键字段，此字段在dataTable中定义</p>
+</li>
+<li><p>pidField: 父节点的主键字段，此字段在dataTable中定义</p>
+</li>
+<li><p>nameField: 节点名称字段，此字段在dataTable中定义</p>
+</li>
+<li><p>setting: 树的setting定义字段，此字段在dataTable所在的viewModel中定义</p>
+</li>
+</ul>
+<p>相关内容：</p>
+<p><a href="http://docs.tinper.org/moy/kero/tree.html">基础树</a></p>
+<p>{% raw %}</p>
+<div class="example-content"><div id="treeTest" class="ztree" u-meta='{&quot;id&quot;:&quot;tree2&quot;,&quot;data&quot;:&quot;dataTable&quot;,&quot;type&quot;:&quot;tree&quot;,&quot;idField&quot;:&quot;id&quot;,&quot;pidField&quot;:&quot;pid&quot;,&quot;nameField&quot;:&quot;title&quot;,&quot;setting&quot;:&quot;treeSetting&quot;}'>
+</div>
+</div>
 
-</code></pre></li>
-</ul>
-</li>
-</ul>
-<p><strong>注</strong>：如果在开发时要求兼容ie8,ie9，datasource必须定义。　</p>
-<p>u-meta基础api请参考<a href="http://docs.tinper.org/moy/kero-model.html#Type类型">这里</a></p>
-<h4 id="CascaderAdapter对象">CascaderAdapter对象</h4><ul>
-<li>类型：<code>Object</code></li>
-<li>说明： 获取CascaderAdapter对象，可以通过此对象的一些方法来改变下拉框的效果状态。下面方法均是在此对象基础上调用的。</li>
-<li>用法：<code>app.getComp(&#39;控件id值&#39;)；</code></li>
-</ul>
-<pre><code>
-&lt;div id=&quot;combo1&quot; class=&quot;u-combo u-text u-label-floating&quot; u-meta=&#39;{&quot;id&quot;:&quot;c1&quot;,&quot;type&quot;:&quot;u-cascader&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;datasource&quot;:&quot;casData&quot;}&#39;&gt;
-    &lt;input class=&quot;u-input&quot;/&gt;
-    &lt;span class=&quot;u-combo-icon&quot;&gt;&lt;/span&gt;
+
+
+<script>
+$(document).ready(function () {
+    var viewModel = {
+        dataTable: new u.DataTable({
+            meta: {
+                'id': {
+                    'value':""
+                },
+                'pid': {
+                    'value':""
+                },
+                'title':{
+                    'value':""
+                }
+            }
+        }),
+        treeSetting:{
+            view:{
+                showLine:false,
+                multiSelect:true
+            }
+        }
+    };
+
+    app = u.createApp({
+        el: 'body',
+        model: viewModel
+    });
+
+    var data = [{
+                "id": "01",
+                "pid": "root",
+                "title": "f1"
+            },{
+                "id": "02",
+                "pid": "root",
+                "title": "f2"
+            },{
+                "id": "101",
+                "pid": "01",
+                "title": "f11"
+            },{
+                "id": "102",
+                "pid": "01",
+                "title": "f12"
+            },{
+                "id": "201",
+                "pid": "02",
+                "title": "f21"
+            }]
+    viewModel.dataTable.removeAllRows();
+    viewModel.dataTable.setSimpleData(data);
+});
+</script>
+
+<p>{% endraw %}</p>
+<pre><code class="lang-html">&lt;div id=&quot;treeTest&quot; class=&quot;ztree&quot; u-meta=&#39;{&quot;id&quot;:&quot;tree2&quot;,&quot;data&quot;:&quot;dataTable&quot;,&quot;type&quot;:&quot;tree&quot;,&quot;idField&quot;:&quot;id&quot;,&quot;pidField&quot;:&quot;pid&quot;,&quot;nameField&quot;:&quot;title&quot;,&quot;setting&quot;:&quot;treeSetting&quot;}&#39;&gt;
 &lt;/div&gt;
 
-var cascaderAObject = app.getComp(&#39;c1&#39;);//c1为在u-meta中定义的id值
+</code></pre>
+<pre><code class="lang-js">$(document).ready(function () {
+    var viewModel = {
+        dataTable: new u.DataTable({
+            meta: {
+                &#39;id&#39;: {
+                    &#39;value&#39;:&quot;&quot;
+                },
+                &#39;pid&#39;: {
+                    &#39;value&#39;:&quot;&quot;
+                },
+                &#39;title&#39;:{
+                    &#39;value&#39;:&quot;&quot;
+                }
+            }
+        }),
+        treeSetting:{
+            view:{
+                showLine:false,
+                multiSelect:true
+            }
+        }
+    };
 
-</code></pre><h4 id="setData 设置数据源">setData 设置数据源</h4><ul>
-<li>类型： <code>Function</code></li>
-<li>说明：给级联对象添加数据源</li>
-<li>参数：<ul>
-<li><code>{Array} dataArray</code></li>
-</ul>
-</li>
-<li>用法：</li>
-</ul>
-<pre><code>//value为：级联真实值，name为级联显示值，children为子项列表数据，格式同上
-var data = [{
-        value: &quot;01&quot;,
-        name: &#39;浙江&#39;,
-        children: [{
-            value: &quot;11&quot;,
-            name: &#39;杭州&#39;,
-            children: [{
-                value: &quot;21&quot;,
-                name: &#39;西湖&#39;,
-                children: [{
-                        value: &quot;31&quot;,
-                        name: &#39;白娘子&#39;
-                    },
-                    {
-                        value: &quot;32&quot;,
-                        name: &#39;许仙&#39;
-                    }
-                ]
+    app = u.createApp({
+        el: &#39;body&#39;,
+        model: viewModel
+    });
+
+    var data = [{
+                &quot;id&quot;: &quot;01&quot;,
+                &quot;pid&quot;: &quot;root&quot;,
+                &quot;title&quot;: &quot;f1&quot;
+            },{
+                &quot;id&quot;: &quot;02&quot;,
+                &quot;pid&quot;: &quot;root&quot;,
+                &quot;title&quot;: &quot;f2&quot;
+            },{
+                &quot;id&quot;: &quot;101&quot;,
+                &quot;pid&quot;: &quot;01&quot;,
+                &quot;title&quot;: &quot;f11&quot;
+            },{
+                &quot;id&quot;: &quot;102&quot;,
+                &quot;pid&quot;: &quot;01&quot;,
+                &quot;title&quot;: &quot;f12&quot;
+            },{
+                &quot;id&quot;: &quot;201&quot;,
+                &quot;pid&quot;: &quot;02&quot;,
+                &quot;title&quot;: &quot;f21&quot;
             }]
-        }]
-    }];
-
-
-cascaderAObject.setData(data);
-
-</code></pre><h4 id="setValue 根据真实值选中某行">setValue 根据真实值选中某行</h4><ul>
-<li>类型： <code>Function</code></li>
-<li>说明： 查找级联数据中与传入的参数相同的真实值，并选中对应的某条数据</li>
-<li>参数：<ul>
-<li><code>{String} value</code>： 要选中行的真实值，可以为空，如果为空，则清空输入框</li>
-</ul>
-</li>
-<li>用法：</li>
-</ul>
-<pre><code>
-cascaderAObject.setValue(value);
-
-</code></pre><p>相关内容：</p>
-<p><a href="http://docs.tinper.org/neoui/plugin.html#级联组件">ui级联组件</a>    </p>
+    viewModel.dataTable.removeAllRows();
+    viewModel.dataTable.setSimpleData(data);
+});
+</code></pre>
 
         </div>
         <div class="col-md-3" role="complementary">
@@ -342,9 +397,19 @@ cascaderAObject.setValue(value);
                     
                     <li>
                         
-                        <a href="moy 组件库-树.html" >树</a>
+                        <a href="moy 组件库-树.html" style="color:#0088a4">树</a>
                         
                     </li>
+                    
+                    
+                    
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#order: 25" >order: 25</a>
+                        </li>
+                    
                     
                     
                 </ul>
