@@ -49,24 +49,24 @@ math.add()与math模块加载不是同步的，加载完math模块，运用math�
 目前，require.js是主要是实现了AMD规范的javascript库。平台中也是使用的require.js做为AMD模块化规范。可参见：http://www.requirejs.cn/ 学习requirejs的用法。
 
 ### 币种节点Currtype.html解析
-![html](../../images/快速开发/1.png)
-![html](../../images/快速开发/2.png)
-![html](../../images/快速开发/3.png)
+![html](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/1.png)
+![html](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/2.png)
+![html](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/3.png)
 
 
 ### 币种节点 meta.js解析
 #### 向导生成数据模型，字段默认类型为String
-![html](../../images/快速开发/4.png)
+![html](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/4.png)
 
 ### 币种节点 Currtype.js解析
 #### 使用requirejs的方式引用，前三个分别是：对应的html、数据模型js、对用的css。
-![meta](../../images/快速开发/5.png)
+![meta](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/5.png)
 
 #### 事件：打开节点时的页面初始化方法pageInit()，初始化界面及数据模型：
-![事件](../../images/快速开发/6.png)
+![事件](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/6.png)
 
 
 ### 新增修改保存方法
-![事件](../../images/快速开发/7.png)
-![事件](../../images/快速开发/8.png)
-![事件](../../images/快速开发/9.png)
+![事件](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/7.png)
+![事件](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/8.png)
+![事件](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/快速开发/9.png)

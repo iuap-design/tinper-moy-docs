@@ -15,36 +15,36 @@
   "pages": [
     {
       "name": "index",
-      "title": "tinper-moy概述",
+      "title": "tinper-moy 概述",
       "banner": {
-        "title": " tinper-moy 概述",
-        "description": "开始"
+        "title": " tinper-moy 技术文档",
+        "description": "概述"
       },
       "content": "./docs/tinper-moy/index.md"
     },
     {
       "name": "快速入门",
-      "title": "tinper-moy技术文档-快速入门",
+      "title": "tinper-moy 快速入门",
       "banner": {
-        "title": " tinper-moy 快速入门",
-        "description": "tinper-moy技术文档-快速入门"
+        "title": "tinper-moy 技术文档",
+        "description": "快速入门"
       },
       "content": "./docs/tinper-moy/tinper-moy-hello.md"
     },
     {
       "name": "config",
-      "title": "tinper-moy技术文档-实战开发",
+      "title": "tinper-moy 实战开发",
       "banner": {
-        "title": "tinper-moy 实战开发",
-        "description": "tinper-moy技术文档-实战开发"
+        "title": "tinper-moy 技术文档",
+        "description": "实战开发"
       },
       "content": "./docs/tinper-moy/shizhan.md"
     },
     {
-      "name": "studio实战开发",
-      "title": "studio实战开发",
+      "name": "studio 实战开发",
+      "title": "studio 实战开发",
       "banner": {
-        "title": "基于studio实战开发",
+        "title": "tinper-moy 技术文档",
         "description": "基于studio实战开发"
       },
       "content": "./docs/tinper-moy/studio.md"
@@ -53,7 +53,7 @@
       "name": "tinper-moy 技术 API",
       "title": "tinper-moy 技术 API",
       "banner": {
-        "title": "tinper-moy 技术 API",
+        "title": "tinper-moy 技术文档",
         "description": "tinper-moy 技术 API"
       },
       "content": "./docs/tinper-moy/api.md"
@@ -62,7 +62,7 @@
       "name": "moy 组件库",
       "title": "moy 组件库",
       "banner": {
-        "title": "moy 组件库",
+        "title": " tinper-moy 技术文档",
         "description": "moy 组件库"
       },
       "content": {
@@ -157,7 +157,7 @@
       "name": "tinper-moy 附录",
       "title": "附录",
       "banner": {
-        "title": "tinper-moy 附录",
+        "title": "tinper-moy 技术文档",
         "description": "tinper-moy 附录"
       },
       "content": "./docs/tinper-moy/tinper-moy-more.md"

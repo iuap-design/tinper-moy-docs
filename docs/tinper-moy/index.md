@@ -22,19 +22,19 @@ moy 是基于模型框架 kero 和 UI 框架 neoui 实现的应用框架，是�
 - 1.1.9树表。[tree](http://docs.tinper.org/moy/kero/tree.html)
 
 - 1.1.10如何快速预览和拷贝和调试？[在线调试例子](http://tinper.org/webide/#/demos/ui/button)
-![效果](../../images/概述/kuangjia.png)
+![效果](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/概述/kuangjia.png)
 ### 1.2 moy 整体介绍
 本文会一步步引导大家使用moy如何快速创建一个后台管理系统，该教程基于uba，包含查询、编辑、删除、创建，以及分页处理，数据 mock，自动处理 loading 状态等.
 ### 1.3 最终演示
-![效果](../../images/概述/xiaoguo.gif)
+![效果](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/概述/xiaoguo.gif)
 ## 2.框架仓库结构说明
 
 ### 框架所有仓库结构图
 
-![框架所有仓库结构说明](../../images/概述/框架所有仓库结构说明.png)
+![框架所有仓库结构说明](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/概述/框架所有仓库结构说明.png)
 ### 框架核心仓库结构图
 
-![框架核心仓库结构说明](../../images/概述/框架核心仓库结构说明.png)
+![框架核心仓库结构说明](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/概述/框架核心仓库结构说明.png)
 
 以下针对结构图进行分层说明：
 ### 框架基础
@@ -80,7 +80,7 @@ new对象时都会调用initialize方法，UI组件基类BaseComponent与u-meta�
 
 u-meta组件解析过程说明图
 
-![u-meta组件解析过程](../../images/概述/u-meta组件解析过程.png)
+![u-meta组件解析过程](http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/概述/u-meta组件解析过程.png)
 * createApp：针对页面的u-meta进行解析，生成组件并与datatable进行绑定
 * app.init：针对页面的u-meta进行解析的核心方法，遍历所有的u-meta元素调用compMgr.createDataAdapter生成每个组件
 * compMgr.createDataAdapter：针对传入的type级u-meta属性new对应的adapter
