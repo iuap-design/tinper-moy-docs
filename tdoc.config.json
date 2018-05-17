@@ -32,6 +32,15 @@
       "content": "./docs/tinper-moy/tinper-moy-hello.md"
     },
     {
+      "name": "深入理解",
+      "title": "tinper-moy 深入理解",
+      "banner": {
+        "title": "tinper-moy 技术文档",
+        "description": "深入理解 Moy"
+      },
+      "content": "./docs/tinper-moy/thorough.md"
+    },
+    {
       "name": "config",
       "title": "tinper-moy 实战开发",
       "banner": {
@@ -39,15 +48,6 @@
         "description": "实战开发"
       },
       "content": "./docs/tinper-moy/shizhan.md"
-    },
-    {
-      "name": "studio 实战开发",
-      "title": "studio 实战开发",
-      "banner": {
-        "title": "tinper-moy 技术文档",
-        "description": "基于studio实战开发"
-      },
-      "content": "./docs/tinper-moy/studio.md"
     },
     {
       "name": "tinper-moy 技术 API",

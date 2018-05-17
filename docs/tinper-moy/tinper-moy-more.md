@@ -26,23 +26,29 @@ KO重要特性：
 最快速、最有趣的方式就是通过互动式教学的方式来开始学习，一旦你掌握了最基本的技巧，学习了每个在线实例，你就可以在你的项目中一展身手了。
 
 ## data-bind声明式绑定
-- bisible
-  ` <div id="myview" data-bind="visible : isVisible"> visible bind </div>`
-- text 
-  ` <div id="myview" data-bind="text : name">`
-- html
-  ` <div id="myview" data-bind="html : htmlContent">`
-- css 
-  ` <div id="myview" data-bind="css : {redbg : testValue() < 0}">`
-- attr
-  ` <div id="myview" data-bind="attr : {title : titleName}">`
-- click
-  ` <div data-bind="text : clickCount">`
-- foreach
-  ` <tbody data-bind="foreach: people"><tr><td data-bind="text: firstName"></td> <td data-bind="text: lastName"></td></tr></tbody>`
-- ` js 部分: ko.applyBindings({         people: [             { firstName: 'Bert', lastName: 'Bertington' },             { firstName: 'Charles', lastName: 'Charlesforth' },             { firstName: 'Denise', lastName: 'Dentiste' }         ]     });`   
-- 增加节点
 
+```
+ bisible
+  <div id="myview" data-bind="visible : isVisible"> visible bind </div>
+ text 
+  <div id="myview" data-bind="text : name">
+ html
+  <div id="myview" data-bind="html : htmlContent">
+ css 
+  <div id="myview" data-bind="css : {redbg : testValue() < 0}">
+ attr
+  <div id="myview" data-bind="attr : {title : titleName}">
+ click
+  <div data-bind="text : clickCount">
+ foreach
+  <tbody data-bind="foreach: people"><tr><td data-bind="text: firstName"></td> <td data-bind="text: lastName"></td></tr></tbody>
+ js 部分: ko.applyBindings({         
+ people: [
+     { firstName: 'Bert', lastName: 'Bertington' },
+     { firstName: 'Charles', lastName: 'Charlesforth' },
+     { firstName: 'Denise', lastName: 'Dentiste' }
+  ]
+ });
 ```
 <script type="text/javascript" src="knockout-2.2.0.js"></script>
 
@@ -50,13 +56,13 @@ KO重要特性：
  <ul data-bind="foreach: people"> 
 
      <li> 
-
+    
          Name at position <span data-bind="text: $index"> </span>: 
-
+    
          <span data-bind="text: name"> </span> 
-
+    
          Remove 
-
+    
      </li> 
 
  </ul> 
@@ -66,23 +72,23 @@ KO重要特性：
  <script type="text/javascript">
 
      function AppViewModel() {
-
+    
          var self = this;
 self.people = ko.observableArray([
      { name: 'Bert' },
      { name: 'Charles' },
      { name: 'Denise' }
  ]);
- 
+
      self.addPerson = function () {
          self.people.push({ name: "New at " + new Date() });
      };
- 
+     
      self.removePerson = function () {
          self.people.remove(this);
      }
  }
- 
+
  ko.applyBindings(new AppViewModel());
   </script>
 ```
@@ -134,3 +140,5 @@ self.people = ko.observableArray([
      ko.applyBindings(viewModel); 
 
  [更多请参考](http://www.aizhengli.com/knockoutjs/)
+
+```
