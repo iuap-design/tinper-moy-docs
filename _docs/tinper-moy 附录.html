@@ -110,56 +110,56 @@
 <p>一套全面完整的规范（采用行为驱动开发）-这意味着在新的浏览器或平台中也能够很容易验证通过。</p>
 <p>开发人员如果熟悉Ruby on Rails，Asp.net MVC 或其它MVC技术可能会发现它是一个带有声明式语法的MVC实时form。换句话说，你可以把KO当成通过编辑JSON数据来制作UI用户界面的一种方式… 不管它为你做什么。</p>
 <h2 id="如何使用?">如何使用?</h2><p>最快速、最有趣的方式就是通过互动式教学的方式来开始学习，一旦你掌握了最基本的技巧，学习了每个在线实例，你就可以在你的项目中一展身手了。</p>
-<h2 id="data-bind声明式绑定">data-bind声明式绑定</h2><ul>
-<li>bisible
-<code>&lt;div id=&quot;myview&quot; data-bind=&quot;visible : isVisible&quot;&gt; visible bind &lt;/div&gt;</code></li>
-<li>text 
-<code>&lt;div id=&quot;myview&quot; data-bind=&quot;text : name&quot;&gt;</code></li>
-<li>html
-<code>&lt;div id=&quot;myview&quot; data-bind=&quot;html : htmlContent&quot;&gt;</code></li>
-<li>css 
-<code>&lt;div id=&quot;myview&quot; data-bind=&quot;css : {redbg : testValue() &lt; 0}&quot;&gt;</code></li>
-<li>attr
-<code>&lt;div id=&quot;myview&quot; data-bind=&quot;attr : {title : titleName}&quot;&gt;</code></li>
-<li>click
-<code>&lt;div data-bind=&quot;text : clickCount&quot;&gt;</code></li>
-<li>foreach
-<code>&lt;tbody data-bind=&quot;foreach: people&quot;&gt;&lt;tr&gt;&lt;td data-bind=&quot;text: firstName&quot;&gt;&lt;/td&gt; &lt;td data-bind=&quot;text: lastName&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;</code></li>
-<li><code>js 部分: ko.applyBindings({         people: [             { firstName: &#39;Bert&#39;, lastName: &#39;Bertington&#39; },             { firstName: &#39;Charles&#39;, lastName: &#39;Charlesforth&#39; },             { firstName: &#39;Denise&#39;, lastName: &#39;Dentiste&#39; }         ]     });</code>   </li>
-<li>增加节点</li>
-</ul>
-<pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;knockout-2.2.0.js&quot;&gt;&lt;/script&gt;
+<h2 id="data-bind声明式绑定">data-bind声明式绑定</h2><pre><code> bisible
+  &lt;div id=&quot;myview&quot; data-bind=&quot;visible : isVisible&quot;&gt; visible bind &lt;/div&gt;
+ text 
+  &lt;div id=&quot;myview&quot; data-bind=&quot;text : name&quot;&gt;
+ html
+  &lt;div id=&quot;myview&quot; data-bind=&quot;html : htmlContent&quot;&gt;
+ css 
+  &lt;div id=&quot;myview&quot; data-bind=&quot;css : {redbg : testValue() &lt; 0}&quot;&gt;
+ attr
+  &lt;div id=&quot;myview&quot; data-bind=&quot;attr : {title : titleName}&quot;&gt;
+ click
+  &lt;div data-bind=&quot;text : clickCount&quot;&gt;
+ foreach
+  &lt;tbody data-bind=&quot;foreach: people&quot;&gt;&lt;tr&gt;&lt;td data-bind=&quot;text: firstName&quot;&gt;&lt;/td&gt; &lt;td data-bind=&quot;text: lastName&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;
+ js 部分: ko.applyBindings({         
+ people: [
+     { firstName: &#39;Bert&#39;, lastName: &#39;Bertington&#39; },
+     { firstName: &#39;Charles&#39;, lastName: &#39;Charlesforth&#39; },
+     { firstName: &#39;Denise&#39;, lastName: &#39;Dentiste&#39; }
+  ]
+ });
+</code></pre><script type="text/javascript" src="knockout-2.2.0.js"></script>
 
- &lt;h4&gt;People&lt;/h4&gt; 
- &lt;ul data-bind=&quot;foreach: people&quot;&gt; 
+<p> <h4>People</h4> 
+ <ul data-bind="foreach: people"> </p>
+<pre><code> &lt;li&gt; 
 
-     &lt;li&gt; 
+     Name at position &lt;span data-bind=&quot;text: $index&quot;&gt; &lt;/span&gt;: 
 
-         Name at position &lt;span data-bind=&quot;text: $index&quot;&gt; &lt;/span&gt;: 
+     &lt;span data-bind=&quot;text: name&quot;&gt; &lt;/span&gt; 
 
-         &lt;span data-bind=&quot;text: name&quot;&gt; &lt;/span&gt; 
+     Remove 
 
-         Remove 
+ &lt;/li&gt; 
+</code></pre><p> </ul> </p>
+ <button data-bind="click: addPerson">Add</button>
 
-     &lt;/li&gt; 
-
- &lt;/ul&gt; 
-
- &lt;button data-bind=&quot;click: addPerson&quot;&gt;Add&lt;/button&gt;
-
- &lt;script type=&quot;text/javascript&quot;&gt;
+ <script type="text/javascript">
 
      function AppViewModel() {
 
          var self = this;
 self.people = ko.observableArray([
-     { name: &#39;Bert&#39; },
-     { name: &#39;Charles&#39; },
-     { name: &#39;Denise&#39; }
+     { name: 'Bert' },
+     { name: 'Charles' },
+     { name: 'Denise' }
  ]);
 
      self.addPerson = function () {
-         self.people.push({ name: &quot;New at &quot; + new Date() });
+         self.people.push({ name: "New at " + new Date() });
      };
 
      self.removePerson = function () {
@@ -168,22 +168,26 @@ self.people = ko.observableArray([
  }
 
  ko.applyBindings(new AppViewModel());
-  &lt;/script&gt;
-</code></pre><ul>
-<li><p>如果我们想要输出数组中的所有元素而不是像例一中使用firstName去指定元素的话，我们可以使用$data来进行输出。</p>
-  <script type="text/javascript" src="knockout-2.2.0.js"></script>
-   <ul data-bind="foreach: months"> 
-       The current item is: <b data-bind="text: $data"></b> 
-   </li> 
-   </ul> 
-   <script type="text/javascript"> 
-   ko.applyBindings({
-       months: ['Jan', 'Feb', 'Mar', 'etc']
-   }); 
-  </script>    
-</li>
-<li><p>使用$index、$parent等其他的上下文属性</p>
-</li>
+  </script>
+```
+
+
+
+- 如果我们想要输出数组中的所有元素而不是像例一中使用firstName去指定元素的话，我们可以使用$data来进行输出。
+
+    <script type="text/javascript" src="knockout-2.2.0.js"></script>
+     <ul data-bind="foreach: months"> 
+         The current item is: <b data-bind="text: $data"></b> 
+     </li> 
+     </ul> 
+     <script type="text/javascript"> 
+     ko.applyBindings({
+         months: ['Jan', 'Feb', 'Mar', 'etc']
+     }); 
+    </script>    
+
+<ul>
+<li>使用$index、$parent等其他的上下文属性</li>
 <li><b data-bind="text: name"></b> likes the blog post <b data-bind="text: $parent.blogPostTitle"></b></li>
 <li><p>使用&quot;as&quot;为foreach中的元素定义别名我们可以使用$data来代替数组中的元素，同时我们也可以使用as来为我们要遍历的元素起一个别名。</p>
 <p>  <script type="text/javascript" src="knockout-2.2.0.js"></script></p>
@@ -212,6 +216,7 @@ self.people = ko.observableArray([
 <p><a href="http://www.aizhengli.com/knockoutjs/">更多请参考</a></p>
 </li>
 </ul>
+<p><code>`</code></p>
 
         </div>
         <div class="col-md-3" role="complementary">

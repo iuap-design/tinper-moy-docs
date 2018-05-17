@@ -97,7 +97,1035 @@
     <div class="row">
         <div class="col-md-9 markdown-body" role="main">
             
-            <h1 id="深入理解 Moy">深入理解 Moy</h1><h2 id="1. Moy Web 组件化">1. Moy Web 组件化</h2><h2 id="2. Moy 数据模型的增强">2. Moy 数据模型的增强</h2><h2 id="3. Moy IE8 兼容解决方案">3. Moy IE8 兼容解决方案</h2><h2 id="4. 前后端数据模型一致的解决方案">4. 前后端数据模型一致的解决方案</h2><h2 id="5. 路由">5. 路由</h2>
+            <h1 id="深入理解 Moy">深入理解 Moy</h1><h2 id="1. Moy Web 组件化">1. Moy Web 组件化</h2><h3 id="1.1组件化是如何实现?">1.1组件化是如何实现?</h3><ul>
+<li>组件化实现:</li>
+</ul>
+<pre><code>框架封装 UI 组件根据元素传入 class 值来渲染组件,根据元素传入 u-meta 参数来负责渲染数据,从而实现快速搭建项目.
+</code></pre><h3 id="1.2 控件模型">1.2 控件模型</h3><ul>
+<li>控件模型是什么?</li>
+</ul>
+<pre><code>控件模型是为解决复杂交互页面中，业务逻辑对数据存在一系列处理需求而设计的。用来简化开发者对相关逻辑的开发。比如：数据的必填、数据的各种校验、数据的显示格式等。
+</code></pre><ul>
+<li>控件模型与UI和数据模型之间的关系表现为：</li>
+</ul>
+<p><img src="http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/%E6%A6%82%E8%BF%B0/mvvm.png" alt="img"></p>
+<p>在一般的场景中，数据模型可以直接与UI进行数据绑定。当有数据处理需求时，可以通过控件模型来处理UI和数据模型之间的数据通信。控件模型在处理数据的同时，会进行相关业务逻辑的处理。</p>
+<p>基本示例</p>
+<p>本例实现如下效果：</p>
+<ul>
+<li>默认数据绑定：<code>#demo_input</code>输入框绑定<code>&#39;hello world&#39;</code></li>
+<li>双向绑定： <code>#demo_div</code>获取<code>#demo_input</code>默认的值、及<code>#demo_input</code>修改失去焦点后的值</li>
+</ul>
+<p>Hello World</p>
+<pre><code>&lt;!-- 
+    HTML
+    u-meta:框架特有标记，框架通过识别此标记创建对应UI组件，以及进行数据绑定 
+    id,type.data,field为必选项
+    id:创建组件唯一标识
+    type:创建组件对应的类型
+    data:指定数据模型中的数据集
+    field:绑定数据集中对应的字段
+--&gt;
+&lt;input id=&quot;demo_input&quot; u-meta=&#39;{&quot;id&quot;:&quot;t1&quot;,&quot;type&quot;:&quot;string&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;}&#39; /&gt;
+&lt;div id=&quot;demo_div&quot;&gt;&lt;/div&gt;
+</code></pre><pre><code>// JS
+var app,viewModel;
+/**
+ * viewModel 创建数据模型
+ * dt1 创建的数据集
+ * f1 创建数据集中的字段
+ * type:指定数据对应的类型
+ */
+viewModel = {
+    dt1: new u.DataTable({
+        meta:{
+            f1:{
+                type:&#39;string&#39;
+            }
+        }
+    })
+};
+
+/**
+ * app 创建框架服务
+ * el 指定服务对应的顶层DOM
+ * model 指定服务对应的数据模型
+ */
+app = u.createApp({
+    el:&#39;body&#39;,
+    model:viewModel
+});
+
+// 数据集dt1创建空行，并为字符f1赋值&#39;Hello World&#39;
+var r = viewModel.dt1.createEmptyRow();
+r.setValue(&#39;f1&#39;,&#39;Hello World&#39;);
+
+
+/**
+ * 数据集发生改变时，将#demo_input数据显示在#demo_div中
+ * @return {[type]} [description]
+ */
+var demoInput = document.getElementById(&#39;demo_input&#39;);
+var demoDiv = document.getElementById(&#39;demo_div&#39;);
+
+var getDtValue = function() {
+    var dtVal = viewModel.dt1.getValue(&#39;f1&#39;);
+    demoDiv.innerHTML = dtVal;
+};
+demoInput.addEventListener(&#39;blur&#39;,getDtValue);
+getDtValue();
+</code></pre><h4 id="API">API</h4><pre><code>&lt;div class=&quot;u-text&quot;  u-meta=&#39;{&quot;id&quot;:&quot;f1&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;type&quot;:&quot;u-text&quot;}&#39;&gt;
+    &lt;input class=&quot;u-input&quot;/&gt;
+&lt;/div&gt;
+</code></pre><p><code>u-meta</code>为框架特有标记，框架通过识别此标记创建对应UI组件，以及进行数据绑定 ，<code>u-meta</code>中的必填项如下：</p>
+<table>
+<thead>
+<tr>
+<th>标签</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>创建组件唯一标识</td>
+</tr>
+<tr>
+<td>type*</td>
+<td>创建组件对应的类型</td>
+</tr>
+<tr>
+<td>data</td>
+<td>指定数据模型中的数据集</td>
+</tr>
+<tr>
+<td>field</td>
+<td>绑定数据集中对应的字段</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>type用于创建对应的UI组件交互形式，完整类型见下。</p>
+<p>​</p>
+</li>
+</ul>
+<h3 id="Type类型">Type类型</h3><h4 id="数据">数据</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>integer</td>
+<td>整数数字输入框</td>
+</tr>
+<tr>
+<td>float</td>
+<td>浮点数字输入框</td>
+</tr>
+</tbody>
+</table>
+<h4 id="日期">日期</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u-year</td>
+<td>年份控件</td>
+</tr>
+<tr>
+<td>u-month</td>
+<td>月份输入框</td>
+</tr>
+<tr>
+<td>u-yearmonth</td>
+<td>年份月份控件</td>
+</tr>
+<tr>
+<td>u-time</td>
+<td>时间控件</td>
+</tr>
+<tr>
+<td>u-clockpicker</td>
+<td>时间控件，显示为钟表形式</td>
+</tr>
+<tr>
+<td>u-date</td>
+<td>日期输入框</td>
+</tr>
+<tr>
+<td>u-datetime*</td>
+<td>日期时间输入框</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>u-date</code> , <code>u-datetime</code> 表示元素为日期时间输入框</p>
+<blockquote>
+<p>时间日期有<code>format</code>属性，type为<code>u-date</code>时<code>format</code>默认为“YYYY-MM-DD”，type为<code>u-datetime</code>时<code>format</code>默认为“YYYY-MM-DD HH:mm:ss”</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="文本">文本</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>textarea</td>
+<td>文本域</td>
+</tr>
+<tr>
+<td>u-text</td>
+<td>文本输入框</td>
+</tr>
+</tbody>
+</table>
+<h4 id="选择下拉">选择下拉</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u-combobox*</td>
+<td>下拉框</td>
+</tr>
+<tr>
+<td>u-checkbox*</td>
+<td>复选框</td>
+</tr>
+<tr>
+<td>u-radio*</td>
+<td>单选</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>u-combobox</code> 表示元素为下拉框</p>
+<p><code>datasource</code> 下拉选项对应的数据源,本例为<code>comboData</code>,建议定义在viewModel中.</p>
+<pre><code>&lt;div class=&quot;u-combo u-text&quot; u-meta=&#39;{&quot;id&quot;:&quot;c1&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;type&quot;:&quot;u-combobox&quot;,&quot;datasource&quot;:&quot;comboData&quot;}&#39;&gt;
+    &lt;input class=&quot;u-input&quot;/&gt;
+&lt;/div&gt;
+</code></pre><p>​</p>
+</li>
+<li><p><code>u-checkbox</code> 表示元素为复选框</p>
+<p><code>isGroup</code> 类型Boolean,默认false.表示是否为复选框组，如果是复选框组则多个元素对应相同的date以及field，选中之后对应不同的value值</p>
+<p><code>checkedValue</code> 表示元素为选中状态对应的value值</p>
+<p><code>unCheckedValue</code> 表示元素为非选中状态对应的value值</p>
+<pre><code>&lt;label  class=&quot;u-checkbox&quot; u-meta=&#39;{&quot;id&quot;:&quot;c1&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;type&quot;:&quot;u-checkbox&quot;,&quot;isGroup&quot;:true,&quot;checkedValue&quot;:&quot;test1&quot;}&#39;&gt;
+    &lt;input type=&quot;checkbox&quot; class=&quot;u-checkbox-input&quot;&gt;
+&lt;/label&gt;
+</code></pre><p>​</p>
+</li>
+<li><p><code>u-radio</code> 表示元素为单选.若多个元素设置的data与field一致，则表示为单选组，选择过程中只能选择其中一项。</p>
+<pre><code>&lt;label  class=&quot;u-radio&quot; for=&quot;option-1&quot; u-meta=&#39;{&quot;id&quot;:&quot;r1&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;type&quot;:&quot;u-radio&quot;}&#39;&gt;
+    &lt;input type=&quot;radio&quot; id=&quot;option-1&quot; class=&quot;u-radio-button&quot; name=&quot;options&quot; value=&quot;test1&quot;&gt;
+    &lt;span class=&quot;u-radio-label&quot;&gt;test1&lt;/span&gt;
+&lt;/label&gt;
+&lt;label class=&quot;u-radio&quot; for=&quot;option-2&quot; u-meta=&#39;{&quot;id&quot;:&quot;r2&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;type&quot;:&quot;u-radio&quot;}&#39;&gt;
+    &lt;input type=&quot;radio&quot; id=&quot;option-2&quot; class=&quot;u-radio-button&quot; name=&quot;options&quot; value=&quot;test2&quot;&gt;
+    &lt;span class=&quot;u-radio-label&quot;&gt;test2&lt;/span&gt;
+&lt;/label&gt;
+</code></pre></li>
+</ul>
+<h4 id="级联组件">级联组件</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u-cascader*</td>
+<td>级联组件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>u-cascader</code> 表示元素为级联组件，通过设置data中datasource的值来控制列表的展示</p>
+<pre><code>&lt;div class=&quot;u-cascader&quot; u-meta=&#39;{&quot;id&quot;:&quot;t1&quot;,&quot;type&quot;:&quot;u-cascader&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;datasource&quot;:&quot;ss&quot;}&#39;&gt;&lt;/div&gt;
+</code></pre></li>
+</ul>
+<h4 id="进度条">进度条</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u-progress*</td>
+<td>进度条</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>u-progress</code> 表示元素为进度条，通过设置data中field的值来控制进度条的进度</p>
+<pre><code>&lt;div id=&quot;p1&quot; class=&quot;u-progress&quot; u-meta=&#39;{&quot;id&quot;:&quot;c1&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;,&quot;type&quot;:&quot;u-progress&quot;}&#39;&gt;&lt;/div&gt;
+</code></pre></li>
+</ul>
+<h4 id="树">树</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tree*</td>
+<td>树控件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p><code>tree</code> 表示元素为树控件</p>
+<p><code>idField</code> 构建树结构时的id对应的field</p>
+<p><code>pidField</code> 构建树结构时的pid对应的field</p>
+<p><code>nameField</code> 树节点显示值对应的field</p>
+<pre><code>&lt;div id=&quot;treeTest&quot; class=&quot;ztree&quot; u-meta=&#39;{&quot;id&quot;:&quot;tree2&quot;,&quot;data&quot;:&quot;dataTable1&quot;,&quot;type&quot;:&quot;tree&quot;,&quot;multiSelect&quot;:&quot;true&quot;,&quot;idField&quot;:&quot;id&quot;,&quot;pidField&quot;:&quot;pid&quot;,&quot;nameField&quot;:&quot;title&quot;,&quot;setting&quot;:&quot;treeSetting&quot;}&#39;&gt;&lt;/div&gt;
+</code></pre></li>
+</ul>
+<p>更多<code>tree</code>属性参照:<a href="http://www.treejs.cn/v3/api.php">zTree## API Document</a></p>
+<h2 id="2. Moy 数据模型的增强">2. Moy 数据模型的增强</h2><h3 id="2.1主要功能">2.1主要功能</h3><p>数据模型(dataTabe)作为MVVM架构中Model层的增强。主要功能有：</p>
+<ul>
+<li>以行、列的形式，通过json对象对数据做存储，并对外暴露一批增删改查的API，方便开发者对页面数据的处理，而且所有开发者之间做到统一，减少出错概率。</li>
+<li>数据增加状态标识新增或修改，方便开发者使用。</li>
+<li>具有分页缓存能力，可在前端处理分页(非必要情况下，不推荐前端分页)。</li>
+<li>提供事件监听u.on(element, eventName,child,listener)，把数据变化触发出去，供开发者监听使用。</li>
+</ul>
+<h3 id="2.2模型定义">2.2模型定义</h3><p>模型定义方法：</p>
+<pre><code>var myDataTable = new u.DataTable({ meta:{ field1:{type:date}, field2:{} } })
+</code></pre><p>meta中是模型的字段信息，字段名对应的对象为字段的属性定义。其中常用字段的属性定义的有type、以及一些校验属性（详情参考<a href="http://docs.tinper.org/moy/kero-data.html#%E9%AA%8C%E8%AF%81%E8%AE%BE%E7%BD%AEValidate">这里</a>）、default（设置字段的默认值）以及不同控件的属性设置等。没有字段属性时，可以为空对象。</p>
+<ul>
+<li><p>下面是常用的type类型。</p>
+<ul>
+<li>string：字符串</li>
+<li>integer：整型</li>
+<li>float：浮点型</li>
+<li>date： 日期类型（YY-MM-DD）</li>
+<li>datetime：日期时间类型（YY-MM-DD hh:mm:ss）</li>
+</ul>
+</li>
+<li><p>default可以对应函数（返回具体的默认值），也可以是具体的对象。</p>
+<ul>
+<li><p>对应函数的写法。</p>
+<pre><code>meta: {
+            f1: {
+                default: function() {
+                    return &#39;02-01&#39;;//&#39;02-01&#39;为返回的默认值
+                }
+            }
+       }
+</code></pre></li>
+<li><p>对应对象的写法。default:function(){return ‘aa’}。</p>
+<pre><code>meta: {
+            f1: {
+                default: {
+                    value: &#39;02-01&#39;//value对应具体的默认值
+                }
+            }
+       }
+</code></pre></li>
+</ul>
+</li>
+<li><p>控件的属性设置</p>
+</li>
+</ul>
+<p>1.integerAdapter （整数）</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>属性值类型</th>
+<th>具体描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>max</td>
+<td>integer</td>
+<td>输入的值小于等于max</td>
+</tr>
+<tr>
+<td>min</td>
+<td>integer</td>
+<td>输入的值大于等于min</td>
+</tr>
+<tr>
+<td>maxNotEq</td>
+<td>integer</td>
+<td>输入的值小于max</td>
+</tr>
+<tr>
+<td>minNotEq</td>
+<td>integer</td>
+<td>输入的值大于min</td>
+</tr>
+</tbody>
+</table>
+<p>2.stringAdapter （字符串）</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>属性值类型</th>
+<th>具体描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minLength</td>
+<td>integer</td>
+<td>输入的字符串长度大于等于minLength</td>
+</tr>
+<tr>
+<td>maxLength</td>
+<td>integer</td>
+<td>输入的字符串长度小于等于maxLength</td>
+</tr>
+</tbody>
+</table>
+<p>3.floatAdapter（浮点数）</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>属性值类型</th>
+<th>具体描述</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>precision</td>
+<td>integer</td>
+<td>浮点数的精度</td>
+<td>2</td>
+</tr>
+<tr>
+<td>max</td>
+<td>integer</td>
+<td>输入的值小于等于max</td>
+<td></td>
+</tr>
+<tr>
+<td>min</td>
+<td>integer</td>
+<td>输入的值大于等于min</td>
+<td></td>
+</tr>
+<tr>
+<td>maxNotEq</td>
+<td>integer</td>
+<td>输入的值小于max</td>
+<td></td>
+</tr>
+<tr>
+<td>minNotEq</td>
+<td>integer</td>
+<td>输入的值大于min</td>
+</tr>
+</tbody>
+</table>
+<p>4.currencyAdapter（货币）</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>属性值类型</th>
+<th>具体描述</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>precision</td>
+<td>integer</td>
+<td>浮点数的精度</td>
+<td>2</td>
+</tr>
+<tr>
+<td>max</td>
+<td>integer</td>
+<td>输入的值小于等于max</td>
+<td></td>
+</tr>
+<tr>
+<td>min</td>
+<td>integer</td>
+<td>输入的值大于等于min</td>
+<td></td>
+</tr>
+<tr>
+<td>maxNotEq</td>
+<td>integer</td>
+<td>输入的值小于max</td>
+<td></td>
+</tr>
+<tr>
+<td>minNotEq</td>
+<td>integer</td>
+<td>输入的值大于min</td>
+<td></td>
+</tr>
+<tr>
+<td>curSymbol</td>
+<td>String</td>
+<td>货币符号</td>
+<td>￥</td>
+</tr>
+</tbody>
+</table>
+<p>5.percentAdapter（百分比）</p>
+<table>
+<thead>
+<tr>
+<th>属性名称</th>
+<th>属性值类型</th>
+<th>具体描述</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>precision</td>
+<td>integer</td>
+<td>浮点数的精度</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>字段的属性值在控件模型中被使用到，主要用于控制表单输入、字段显示格式等业务特性。</p>
+<h3 id="2.3数据载入到模型中">2.3数据载入到模型中</h3><p>模型定义好之后，可以通过<code>dataTable.setSimpleData</code>方法把从后台查询到的json数据载入模型之中：</p>
+<pre><code>dataTable.setSimpleData([ {&quot;id&quot;: &quot;001&quot;,&quot;name&quot;: &quot;tom&quot;}, {&quot;id&quot;: &quot;002&quot;,&quot;name&quot;: &quot;john&quot;} ])
+</code></pre><p>数据载入到模型中之后，数据被存储在一组<code>Row</code>对象之中，json数组中的每一个对象，对应dataTable中的<code>Row</code>对象中。</p>
+<h3 id="2.4数据的新增与修改">2.4数据的新增与修改</h3><h4 id="2.4.1新增数据行并赋值">2.4.1新增数据行并赋值</h4><pre><code>var row = dataTable.createEmptyRow(); row.setValue(&#39;id&#39;,&#39;003&#39;)
+</code></pre><p>新增的数据在dataTable中表现为新增一个<code>Row</code>对象。调用<code>setValue</code>对其中字段赋值。</p>
+<h4 id="2.4.2修改已存在的行中数据">2.4.2修改已存在的行中数据</h4><pre><code>var row = dataTable.getRow(index); row.setValue(&#39;name&#39;,&#39;jerry&#39;);
+</code></pre><h3 id="2.5数据的删除">2.5数据的删除</h3><h4 id="2.5.1删除某一行数据">2.5.1删除某一行数据</h4><pre><code>dataTable.removeRow(index);
+</code></pre><h4 id="2.5.2删除所有行数据">2.5.2删除所有行数据</h4><pre><code>dataTable.removeAllRows();
+</code></pre><h3 id="2.6获取模型中的数据">2.6获取模型中的数据</h3><h4 id="2.6.1获取所有数据">2.6.1获取所有数据</h4><pre><code>var json = dataTable.getSimpleData();
+</code></pre><p>获取到的json数据格式，与载入时的数据格式一致。一般是在提交数据时，调用此方法，获取数据后提交给后端。
+在调用<code>getSimpleData</code>方法时可传递参数<code>type</code>来决定获取的数据类型。</p>
+<pre><code>var json = dataTable.getSimpleData({type:&#39;select&#39;});
+</code></pre><p>type可设置为：</p>
+<ul>
+<li>select: 处理选中状态的行数据</li>
+<li>focus: 焦点状态的行数据</li>
+<li>change: 发生改变的行数据</li>
+</ul>
+<p>默认不传递参数则获取所有的数据。</p>
+<h4 id="2.6.2获取某一行的数据">2.6.2获取某一行的数据</h4><pre><code>var row = dataTable.getRow(index); var json = row.getSimpleData();
+</code></pre><h4 id="2.6.3获取某一行中某个字段的值">2.6.3获取某一行中某个字段的值</h4><pre><code>var row = dataTable.getRow(index); var value = row.getValue(&#39;name&#39;);
+</code></pre><h3 id="2.7 基础设置">2.7 基础设置</h3><p>设置基本的校验、格式化、添加事件监听。</p>
+<h4 id="2.7.1校验">2.7.1校验</h4><p>在创建dataTable时进行校验设置</p>
+<pre><code>/**
+ ### 校验类型说明：
+ *  precision: 精度
+ *  max: 数字最大值
+ *  min: 数字最小值
+ *  maxLength: string最大长度
+ *  minLength: string最小长度
+ *  required: 必填
+ */
+
+var dataTable1 = new u.DataTable({
+    meta:{
+    f1:{type:&#39;string&#39;,maxLength:8,minLength:3},
+    f2:{type:&#39;float&#39;, precision:2,max:500,min:100},
+    f3:{type:&#39;integer&#39;, required:true,regExp:/^[0-9]{6}$/},
+    f4:{type:&#39;string&#39;,required:true}
+
+});
+</code></pre><hr>
+<h3 id="2.8格式化">2.8格式化</h3><p>示例如下：</p>
+<pre><code>var dataTable1 = new u.DataTable({
+    meta:{
+    f1:{type:&#39;date&#39;,format:&#39;YYYY-MM-DD&#39;},
+    f2:{type:&#39;date&#39;,format:&#39;YYYY/MM/DD&#39;}
+});
+</code></pre><h3 id="2.9 添加事件监听">2.9 添加事件监听</h3><p>示例如下：</p>
+<pre><code>//数据改变监听
+dataTable1.on(&#39;valueChange&#39;,function(event){
+    var field = event.field,
+        rowId = event.rowId,
+        oldValue = event.oldValue,
+        newValue = event.newValue;
+});
+</code></pre><p>更多设置参见 <a href="http://docs.tinper.org/moy/kero-api.html#DataTable-object">u.DataTable</a></p>
+<hr>
+<h3 id="Example">Example</h3><h3 id="示例：input输入框">示例：input输入框</h3><p>输入长度6-12字符之间</p>
+<pre><code>&lt;!-- HTML --&gt;
+&lt;div id=&quot;demo1&quot;&gt;
+    &lt;input u-meta=&#39;{&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;}&#39; /&gt;    
+&lt;/div&gt;
+</code></pre><pre><code>// JS
+var app,viewModel1;
+viewModel1 = {
+    dt1: new u.DataTable({
+        meta:{
+            f1:{
+                type:&#39;string&#39;,
+                minLength:6,
+                maxLength:12
+            }
+        }
+    })
+};
+
+app = u.createApp({
+    el:&#39;#demo1&#39;,
+    model:viewModel1
+});
+
+var r = viewModel1.dt1.createEmptyRow();
+r.setValue(&#39;f1&#39;,&#39;test txt&#39;);
+</code></pre><h3 id="示例：时间、日期指定格式">示例：时间、日期指定格式</h3><p>输入指定格式</p>
+<pre><code>&lt;!-- HTML --&gt;
+&lt;div id=&quot;demo2&quot;&gt;
+    &lt;div class=&#39;u-datepicker&#39; u-meta=&#39;{&quot;id&quot;:&quot;date1&quot;,&quot;type&quot;:&quot;u-date&quot;,&quot;data&quot;:&quot;dt2&quot;,&quot;field&quot;:&quot;f2&quot;}&#39;&gt;
+        &lt;input class=&quot;u-input&quot; type=&quot;text&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&#39;u-datepicker&#39; u-meta=&#39;{&quot;id&quot;:&quot;datetime2&quot;,&quot;type&quot;:&quot;u-date&quot;,&quot;data&quot;:&quot;dt2&quot;,&quot;field&quot;:&quot;f3&quot;}&#39;&gt;
+        &lt;input class=&quot;u-input&quot; type=&quot;text&quot;&gt;
+        &lt;span class=&quot;input-group-addon&quot;&gt;&lt;span class=&quot;glyphicon glyphicon-calendar&quot;&gt;&lt;/span&gt;
+        &lt;/span&gt;
+    &lt;/div&gt;    
+&lt;/div&gt;
+</code></pre><pre><code>// JS
+var app, viewModel2;
+viewModel2 = {
+    dt2: new u.DataTable({
+        meta: {
+            f2: {
+                type:&#39;date&#39;,
+                format:&#39;YYYY-MM-DD&#39;
+            },
+            f3: {
+                type:&#39;date&#39;,
+                format:&#39;YYYY/MM/DD&#39;
+            }
+        }
+    })
+}
+
+app = u.createApp({
+    el: &#39;#demo2&#39;,
+    model: viewModel2
+});
+
+var r = viewModel2.dt2.createEmptyRow();
+r.setValue(&#39;f2&#39;, &quot;2016-6-30 12:13:22&quot;);
+r.setValue(&#39;f3&#39;, &quot;2016-2-13 4:58:58&quot;);
+</code></pre><h3 id="示例：input输入框">示例：input输入框</h3><p>input输入值变化后，弹框提示</p>
+<pre><code>&lt;!-- HTML --&gt;
+&lt;div id=&quot;demo3&quot;&gt;
+    &lt;input u-meta=&#39;{&quot;data&quot;:&quot;dt3&quot;,&quot;field&quot;:&quot;f1&quot;}&#39; /&gt;    
+&lt;/div&gt;
+</code></pre><pre><code>// JS
+var app,viewModel3;
+viewModel3 = {
+    dt3: new u.DataTable({
+        meta:{
+            f1:{
+                type:&#39;string&#39;
+            }
+        }
+    })
+};
+
+app = u.createApp({
+    el:&#39;#demo3&#39;,
+    model:viewModel3
+});
+
+var r = viewModel3.dt3.createEmptyRow();
+r.setValue(&#39;f1&#39;,&#39;test&#39;);
+
+// 绑定时间触发
+viewModel3.dt3.on(&#39;valueChange&#39;, function(event){
+    var oldValue = event.oldValue;
+    var newValue = event.newValue;
+    alert(&#39;dataTable原始值为:&#39; + oldValue +&#39;\n&#39; + &#39;dataTable现在值为:&#39; + newValue);
+});
+</code></pre><h2 id="验证设置Validate">验证设置Validate</h2><p>创建dataTable,field字段中验证字段，基本设置如下：</p>
+<pre><code>new u.DataTable({ meta:{ field:{ required: true, nullMsg: &#39;内容不能为空!&#39;, errorMsg: &#39;内容输入错误&#39;, placement: &#39;top&#39; ... } } })
+</code></pre><p><em>params</em>:</p>
+<p><code>meta</code>: 字段信息集合，其中的key为字段名，value为字段属性信息，属性信息可自定义</p>
+<hr>
+<h3 id="required">required</h3><p><code>required</code>:指定输入字段是否为必填项，默认为<code>false</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>required</td>
+<td>true</td>
+<td>字段为必填项</td>
+</tr>
+<tr>
+<td>required</td>
+<td>false</td>
+<td>字段为非必填项</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="validType">validType</h3><p><code>validType</code>:验证输入类型，默认值为<code>null</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>validType</td>
+<td>integer</td>
+<td>输入需为整数</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>float</td>
+<td>输入需为浮点数</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>zipCode</td>
+<td>输入需为邮编</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>phone</td>
+<td>输入需为手机号码</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>landline</td>
+<td>输入需为座机号码</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>email</td>
+<td>输入需为邮箱</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>url</td>
+<td>输入需为网址</td>
+</tr>
+<tr>
+<td>validType</td>
+<td>datetime</td>
+<td>输入需为日期</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="nullMsg/errorMsg">nullMsg/errorMsg</h3><p><code>nullMsg</code>:输入为空时的提示信息</p>
+<p><code>errorMsg</code>:输入错误时的提示信息</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nullMsg</td>
+<td>内容自定义：输入为空显示的内容</td>
+<td>输入为空时的提示信息</td>
+</tr>
+<tr>
+<td>errorMsg</td>
+<td>内容自定义：输入错误时显示的内容</td>
+<td>输入错误时的提示信息</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="regExp">regExp</h3><p><code>regExp</code>:设置正则匹配</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>regExp</td>
+<td>正则表达式</td>
+<td>文本框需要匹配的正则</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="notipFlag">notipFlag</h3><p><code>notipFlag</code>:错误信息提示方式是否为<code>tooltip</code>,默认为<code>false</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>notipFlag</td>
+<td>false</td>
+<td>错误信息提示为tips形式</td>
+</tr>
+<tr>
+<td>notipFlag</td>
+<td>true</td>
+<td>错误信息提示自定义，不为tips形式</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="tipId">tipId</h3><p><code>tipId</code>: 指定<code>tooltip</code>显示位置，其值为显示dom元素的id，默认为空，使用默认的<code>tooltip</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tipId</td>
+<td>‘ ‘</td>
+<td>使用默认的tooltip显示tip</td>
+</tr>
+<tr>
+<td>tipId</td>
+<td>id</td>
+<td>使用自定义的id元素显示tip</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="hasSuccess">hasSuccess</h3><p><code>hasSuccess</code>:输入正确后是否提示。默认为<code>false</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hasSuccess</td>
+<td>true</td>
+<td>输入正确后提示</td>
+</tr>
+<tr>
+<td>hasSuccess</td>
+<td>false</td>
+<td>输入正确后不提示</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="successId">successId</h3><p><code>successId</code>:指定正确提示信息的位置，其值为正确dom元素的id，默认在输入框的后面显示</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>successId</td>
+<td>id</td>
+<td>使用自定义的id元素显示正确提示信息</td>
+</tr>
+</tbody>
+</table>
+<p><code>successId</code>能正常显示的前提是<code>hasSuccess:true</code></p>
+<hr>
+<h3 id="placement">placement</h3><p><code>placement</code>:提示框位置，默认为<code>top</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>placement</td>
+<td>top</td>
+<td>上部显示</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>bottom</td>
+<td>底部显示</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>left</td>
+<td>左边显示</td>
+</tr>
+<tr>
+<td>placement</td>
+<td>right</td>
+<td>右边显示</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="minLength&amp;maxLength">minLength&amp;maxLength</h3><p>字符串长度，注意<code>type</code>类型<code>string</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>minLength</td>
+<td>num</td>
+<td>最小长度</td>
+</tr>
+<tr>
+<td>maxLength</td>
+<td>num</td>
+<td>最大长度</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="数值区间">数值区间</h3><p>数值区间，注意<code>type</code>类型<code>integer</code>或<code>float</code></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Value</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>min</td>
+<td>num</td>
+<td>最小数值(包含)</td>
+</tr>
+<tr>
+<td>max</td>
+<td>num</td>
+<td>最大数值(包含)</td>
+</tr>
+<tr>
+<td>minNotEq</td>
+<td>num</td>
+<td>最小数值(不包含)</td>
+</tr>
+<tr>
+<td>maxNotEq</td>
+<td>num</td>
+<td>最大数值(不包含)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="基本示例">基本示例</h3><p><a href="http://tinper.org/webide/#/demos/kero/validate">试一试</a></p>
+<h3 id="Validate">Validate</h3><p>本例实现如下效果：</p>
+<ul>
+<li>基本的validate API测试</li>
+</ul>
+<p>验证测试用例</p>
+<p>*</p>
+<pre><code>&lt;!-- 
+    HTML
+    u-meta:框架特有标记，框架通过识别此标记创建对应UI组件，以及进行数据绑定 
+    id,type.data,field为必选项
+    id:创建组件唯一标识
+    type:创建组件对应的类型
+    data:指定数据模型中的数据集
+    field:绑定数据集中对应的字段
+--&gt;
+&lt;div class=&quot;u-form-group&quot;&gt;
+    &lt;label&gt;验证测试用例&lt;/label&gt;
+    &lt;div class=&quot;u-input-group u-has-feedback&quot; u-meta=&#39;{&quot;id&quot;:&quot;f1field&quot;,&quot;type&quot;:&quot;string&quot;,&quot;data&quot;:&quot;dt1&quot;,&quot;field&quot;:&quot;f1&quot;}&#39;&gt;
+        &lt;div class=&quot;u-input-group-before&quot; style=&quot;color: red;&quot;&gt;*&lt;/div&gt;
+        &lt;input type=&quot;text&quot; class=&quot;u-form-control&quot;&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+// JS
+
+var app,viewModel;
+
+viewModel = {
+    dt1: new u.DataTable({
+        meta:{
+            f1:{type:&#39;string&#39;,required:true,maxLength:8,minLength:3},
+            f2:{type:&#39;string&#39;,required:true,maxLength:8,minLength:3,notipFlag: true,
+                    hasSuccess: true},
+        }
+    })
+};
+
+
+app = u.createApp({
+    el:&#39;body&#39;,
+    model:viewModel
+});
+
+var r = viewModel.dt1.createEmptyRow();
+</code></pre><h2 id="3. Moy IE8 兼容解决方案">3. Moy IE8 兼容解决方案</h2><h3 id="3.1兼容 IE8 背景">3.1兼容 IE8 背景</h3><ul>
+<li>越来越多的站点开始使用<a href="http://baike.baidu.com/item/HTML5">HTML5</a>标签。但情况是还有很多人在使用IE6，IE7，IE8。为了让所有网站浏览者都能正常的访问网站</li>
+<li>可以让一些低级的浏览器支持ecmascript5的一些特性</li>
+</ul>
+<h3 id="3.2 如何实现">3.2 如何实现</h3><ul>
+<li>将下面的示例代码添加到您的代码中即可</li>
+</ul>
+<pre><code>&lt;!--[if lt IE 9]&gt;
+&lt;script src=&quot;//design.yonyoucloud.com/static/tinper-neoui-polyfill/latest/tinper-neoui-polyfill.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//cdn.bootcss.com/es5-shim/4.5.9/es5-sham.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//cdn.bootcss.com/es5-shim/4.5.9/es5-shim.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;//cdn.bootcss.com/html5shiv/r29/html5.min.js&quot;&gt;&lt;/script&gt;
+&lt;![endif]--&gt;
+</code></pre><h3 id="3.3 相关说明">3.3 相关说明</h3><ul>
+<li>polyfill–主要是针对低级浏览器在es5-shim的基础上加入了一些其他的js的兼容代码</li>
+<li><a href="http://www.bootcdn.cn/es5-shim/readme/">es5-shim</a></li>
+<li><a href="http://www.bootcdn.cn/html5shiv/readme/">html5shiv</a></li>
+</ul>
+<h2 id="4. 前后端数据模型一致的解决方案">4. 前后端数据模型一致的解决方案</h2><h2 id="5. 路由与模块化">5. 路由与模块化</h2>
         </div>
         <div class="col-md-3" role="complementary">
             <nav class="docs-sidebar hidden-print hidden-xs hidden-sm">
@@ -112,6 +1140,34 @@
                     
                     
                     
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#1.1组件化是如何实现?" >1.1组件化是如何实现?</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#1.2 控件模型" >1.2 控件模型</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#Type类型" >Type类型</a>
+                        </li>
+                    
+                    </ul>
+                    
+                    
+                    
+                    
                     <li>
                         
                         <a href="#2. Moy 数据模型的增强" >2. Moy 数据模型的增强</a>
@@ -120,11 +1176,263 @@
                     
                     
                     
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#2.1主要功能" >2.1主要功能</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.2模型定义" >2.2模型定义</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.3数据载入到模型中" >2.3数据载入到模型中</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.4数据的新增与修改" >2.4数据的新增与修改</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.5数据的删除" >2.5数据的删除</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.6获取模型中的数据" >2.6获取模型中的数据</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.7 基础设置" >2.7 基础设置</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.8格式化" >2.8格式化</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#2.9 添加事件监听" >2.9 添加事件监听</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#Example" >Example</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#示例：input输入框" >示例：input输入框</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#示例：时间、日期指定格式" >示例：时间、日期指定格式</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#示例：input输入框" >示例：input输入框</a>
+                        </li>
+                    
+                    </ul>
+                    
+                    
+                    
+                    
+                    <li>
+                        
+                        <a href="#验证设置Validate" >验证设置Validate</a>
+                        
+                    </li>
+                    
+                    
+                    
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#required" >required</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#validType" >validType</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#nullMsg/errorMsg" >nullMsg/errorMsg</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#regExp" >regExp</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#notipFlag" >notipFlag</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#tipId" >tipId</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#hasSuccess" >hasSuccess</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#successId" >successId</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#placement" >placement</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#minLength&amp;maxLength" >minLength&amp;maxLength</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#数值区间" >数值区间</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#基本示例" >基本示例</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#Validate" >Validate</a>
+                        </li>
+                    
+                    </ul>
+                    
+                    
+                    
+                    
                     <li>
                         
                         <a href="#3. Moy IE8 兼容解决方案" >3. Moy IE8 兼容解决方案</a>
                         
                     </li>
+                    
+                    
+                    
+                    
+                    <ul class="nav" style="display:block">
+                    
+                        <li>
+                            <a href="#3.1兼容 IE8 背景" >3.1兼容 IE8 背景</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#3.2 如何实现" >3.2 如何实现</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#3.3 相关说明" >3.3 相关说明</a>
+                        </li>
+                    
+                    </ul>
+                    
                     
                     
                     
@@ -138,7 +1446,7 @@
                     
                     <li>
                         
-                        <a href="#5. 路由" >5. 路由</a>
+                        <a href="#5. 路由与模块化" >5. 路由与模块化</a>
                         
                     </li>
                     
