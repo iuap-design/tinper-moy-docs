@@ -7,7 +7,8 @@
 - 组件化实现:
 
 ```
-组件化?组件化是,通过框架封装常用的组件,通过简单的传值和调用,来让用户实现快速搭建项目为目的.框架封装 UI 组件根据元素传入 class 值来渲染组件,根据元素传入 u-meta 参数来负责渲染数据,从而实现快速搭建项目.
+组件化?组件化是,通过框架封装常用的组件,通过简单的传值和调用,来让用户实现快速搭建项目为目的.框架封装 UI 
+组件根据元素传入 class 值来渲染组件,根据元素传入 u-meta 参数来负责渲染数据,从而实现快速搭建项目.
 ```
 
 ### 1.2 控件模型
@@ -15,7 +16,8 @@
 - 控件模型是什么?
 
 ```
-控件模型是为解决复杂交互页面中，业务逻辑对数据存在一系列处理需求而设计的。用来简化开发者对相关逻辑的开发。比如：数据的必填、数据的各种校验、数据的显示格式等。
+控件模型是为解决复杂交互页面中，业务逻辑对数据存在一系列处理需求而设计的。用来简化开发者对相关逻辑的开发。
+比如：数据的必填、数据的各种校验、数据的显示格式等。
 ```
 
 - 控件模型与UI和数据模型之间的关系表现为：
@@ -835,3 +837,88 @@ var r = viewModel.dt1.createEmptyRow();
 
 
 ## 5. 路由与模块化
+
+## 5.1路由
+
+- 5.1.1 路由的作用?
+
+```
+在发展迅速的前端技术领域,希望把页面端做出 APP 效果,只能减少页面跳转带来的等待,让用户可以感觉到页面是一个整体没有重新刷新页面,就会设计到前端路由,简单的说,路由是监听 URL 地址的变化从而触发的重新加载数据而不是刷新页面来改变页面内容.
+```
+
+- 5.1.2 如何实现?
+
+```
+1.注册路由：在router/router.js文件中替换为如下代码：
+
+define(function() {
+    return [{
+        name: "/mainPage/main"
+    }, {
+        name: "/cardtable/cardtable"
+    }]
+});
+2.在左侧栏添加入口：在index.html中加入新增应用管理入口代码：
+
+<ul class="nav-menu height-full" id="menu">
+  <!-- 原有代码请勿拷贝 -->
+  <li class='nav-li'>
+    ...
+  </li>
+  <!-- 新增应用管理入口代码 begin -->
+  <li class='nav-li'>
+    <!-- a标签地址要指向到你想去的页面的路由地址 -->
+    <a href="#cardtable/cardtable">
+      <i class="uf uf-4square-3"></i>
+      <span class="nav-title">应用管理</span>
+    </a>
+  </li>
+  <!-- 新增应用管理入口代码 end -->
+</ul>
+
+3.在首页添加入口：在pages/mainPage/main.html中加入新增应用管理代码：
+
+<div class="u-row bottom-layout margin-0">
+  <!-- 原有代码请勿拷贝 -->
+  <div class="u-col-xs-6 u-col-md-3 content">
+    ...
+  </div>
+  <!--新增应用管理 begin -->
+  <div class="u-col-xs-6 u-col-md-3 content">
+    <a href="#cardtable/cardtable">
+      <div class="u-form-group">
+        <div class="u-col-xs-12 content-svg">
+          <img src="./static/applimanage.png">
+        </div>
+      </div>
+    </a>
+  </div>
+  <!--新增应用管理 end -->
+</div>
+```
+
+这个时候在浏览器刷新下页面，点击**左侧栏**的**应用管理**，这个时候地址栏变成了<http://localhost:8080/#cardtable/cardtable>，页面一片空白，到这里，这一步已经完成了,增加的路由已经生效了.
+
+### 5.2 模块化
+
+- 5.2.1 模块化思想
+
+模块化[JavaScript](http://caibaojian.com/t/javascript)之风早已席卷而来，[CommonJS](http://www.commonjs.org/)、[AMD](http://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition)、[NodeJS](http://nodejs.org/)、[RequireJS](http://requirejs.org/)、[SeaJS](http://seajs.com/)、[curljs](https://github.com/unscriptable/curl) 等模块化的JavaScript概念及库扑面而来，不得不承认，对于前端JavaScript代码的组织编写是一次伟大的变革。moy 框架利用CommonJS 模块化实现.
+
+- 5.2.2 为什么用到模块化?
+
+  - 恼人的命名冲突:
+
+  通过命名空间，的确能极大缓解冲突。但每每看到上面的代码，都忍不住充满同情。为了调用一个简单的方法，需要记住如此长的命名空间，这增加了记忆负担，同时剥夺了不少编码的乐趣。
+
+  - 繁琐的文件依赖:
+
+  变量引用,文件加载顺序,都是 js 中常遇到的问题,通过模块化引入方式避免此类的错误造成的问题.
+
+  - 其他
+
+  1. **模块的版本管理**。通过别名等配置，配合构建工具，可以比较轻松地实现模块的版本管理。
+  2. **提高可维护性**。模块化可以让每个文件的职责单一，非常有利于代码的维护。Sea.js 还提供了 nocache、debug 等插件，拥有在线调试等功能，能比较明显地提升效率。
+  3. **前端性能优化**。Sea.js 通过异步加载模块，这对页面性能非常有益。Sea.js 还提供了 combo、flush 等插件，配合服务端，可以很好地对页面性能进行调优。
+  4. **跨环境共享模块**。CMD 模块定义规范与 Node.js 的模块规范非常相近。通过 Sea.js 的 Node.js 版本，可以很方便实现模块的跨服务器和浏览器共享。
+

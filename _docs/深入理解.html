@@ -100,7 +100,7 @@
             <h1 id="深入理解 Moy">深入理解 Moy</h1><h2 id="1. Moy Web 组件化">1. Moy Web 组件化</h2><h3 id="1.1组件化是如何实现?">1.1组件化是如何实现?</h3><ul>
 <li>组件化实现:</li>
 </ul>
-<pre><code>框架封装 UI 组件根据元素传入 class 值来渲染组件,根据元素传入 u-meta 参数来负责渲染数据,从而实现快速搭建项目.
+<pre><code>组件化?组件化是,通过框架封装常用的组件,通过简单的传值和调用,来让用户实现快速搭建项目为目的.框架封装 UI 组件根据元素传入 class 值来渲染组件,根据元素传入 u-meta 参数来负责渲染数据,从而实现快速搭建项目.
 </code></pre><h3 id="1.2 控件模型">1.2 控件模型</h3><ul>
 <li>控件模型是什么?</li>
 </ul>
@@ -110,8 +110,7 @@
 </ul>
 <p><img src="http://iuap-design-cdn.oss-cn-beijing.aliyuncs.com/static/moy/images/%E6%A6%82%E8%BF%B0/mvvm.png" alt="img"></p>
 <p>在一般的场景中，数据模型可以直接与UI进行数据绑定。当有数据处理需求时，可以通过控件模型来处理UI和数据模型之间的数据通信。控件模型在处理数据的同时，会进行相关业务逻辑的处理。</p>
-<p>基本示例</p>
-<p>本例实现如下效果：</p>
+<h3 id="1.3 基本示例">1.3 基本示例</h3><p>本例实现如下效果：</p>
 <ul>
 <li>默认数据绑定：<code>#demo_input</code>输入框绑定<code>&#39;hello world&#39;</code></li>
 <li>双向绑定： <code>#demo_div</code>获取<code>#demo_input</code>默认的值、及<code>#demo_input</code>修改失去焦点后的值</li>
@@ -209,7 +208,7 @@ getDtValue();
 <p>​</p>
 </li>
 </ul>
-<h3 id="Type类型">Type类型</h3><h4 id="数据">数据</h4><table>
+<h3 id="1.4 Type类型">1.4 Type类型</h3><h4 id="数据">数据</h4><table>
 <thead>
 <tr>
 <th>类型</th>
@@ -1160,7 +1159,15 @@ var r = viewModel.dt1.createEmptyRow();
                     
                     
                         <li>
-                            <a href="#Type类型" >Type类型</a>
+                            <a href="#1.3 基本示例" >1.3 基本示例</a>
+                        </li>
+                    
+                    
+                    
+                    
+                    
+                        <li>
+                            <a href="#1.4 Type类型" >1.4 Type类型</a>
                         </li>
                     
                     </ul>
